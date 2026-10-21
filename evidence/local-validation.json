@@ -1,0 +1,13 @@
+{
+  "CapturedAt": "2026-10-21T23:00:16.6263933+11:00",
+  "PowerShell": "7.6.5",
+  "Pester": "5.7.1",
+  "TestsTotal": 27,
+  "TestsPassed": 27,
+  "TestsFailed": 0,
+  "PSScriptAnalyzer": "1.24.0",
+  "AnalyzerIssues": 0,
+  "AcceptanceSyntaxErrors": 0,
+  "LiveDomainAcceptanceExecuted": false,
+  "Scope": "Offline tests: mocked ActiveDirectory operations and local validation only"
+}
