@@ -5,7 +5,8 @@ Only actual machine results belong here. Every item below is **pending** unless 
 | Evidence | Required proof | State |
 | --- | --- | --- |
 | Offline validation | [Machine-generated result](local-validation.json): 27/27 Pester tests, zero PSScriptAnalyzer findings; acceptance files parse only | Verified 21 October 2026, Australia/Sydney |
-| Host preparation | VM generation, Secure Boot/vTPM, paths on H:, switch and NAT | Pending |
+| Host preparation | VM generation, Secure Boot/vTPM, paths on H:, switch and NAT | VMs/network created; final inventory pending |
+| Server image | [Actual DISM/BCDBoot transcript excerpt](host/server-image-attempt.txt) | Image applied successfully; boot-file setup failed; repair unverified |
 | Evaluation editions | `Get-ComputerInfo` / `DISM /Online /Get-CurrentEdition`, licence expiry from each guest | Pending |
 | Domain | `Get-ADDomain`; CLIENT01 `PartOfDomain=True`; DNS SRV and DHCP lease | Pending |
 | Onboarding/offboarding | Actual account, home ACL, group and leaver OU results | Pending |

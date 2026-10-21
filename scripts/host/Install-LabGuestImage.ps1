@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory)][ValidateSet('DC01','CLIENT01')][string]$VMName,
     [Parameter(Mandatory)][string]$IsoPath,
     [Parameter(Mandatory)][securestring]$LocalPassword,
-    [string]$LabRoot='H:\My Projects - IT\windows-ad-lab\.lab'
+    [string]$LabRoot='H:\My Projects - IT\windows-ad-lab\.lab',
+    [switch]$ResumeAppliedImage
 )
 $ErrorActionPreference='Stop'
 Import-Module (Join-Path $PSScriptRoot '..\..\src\Lab.Image.psm1') -Force
@@ -22,7 +23,9 @@ $mounted=$false
 try {
     $disk=Mount-VHD -Path $vhdPath -PassThru | Get-Disk
     $mounted=$true
-    if ($disk.PartitionStyle -ne 'RAW' -or $disk.IsBoot -or $disk.IsSystem) { throw 'Refusing to change a nonempty or system disk.' }
+    if ($disk.IsBoot -or $disk.IsSystem) { throw 'Refusing to change a host boot/system disk.' }
+    if (-not $ResumeAppliedImage) {
+    if ($disk.PartitionStyle -ne 'RAW') { throw 'Refusing to repartition a nonempty disk.' }
     $diskImage=Mount-DiskImage -ImagePath (Resolve-Path -LiteralPath $IsoPath).Path -PassThru
     $isoVolume=$diskImage | Get-Volume
     $source="$($isoVolume.DriveLetter):\sources\install.wim"
@@ -45,7 +48,26 @@ try {
     $log=Join-Path $LabRoot "$VMName-dism.log"
     & dism.exe /Apply-Image "/ImageFile:$source" "/Index:$($image.ImageIndex)" "/ApplyDir:$destination" "/ScratchDir:$scratch" "/LogPath:$log"
     if ($LASTEXITCODE -ne 0) { throw "DISM failed: $LASTEXITCODE. The partial lab disk needs inspection." }
-    & bcdboot.exe "${destination}Windows" /s "$($efi.DriveLetter):" /f UEFI
+    } else {
+        if ($disk.PartitionStyle -ne 'GPT') { throw 'Boot repair requires the already-applied GPT lab disk.' }
+        $parts=@(Get-Partition -DiskNumber $disk.Number)
+        $efiParts=@($parts | Where-Object GptType -eq '{c12a7328-f81f-11d2-ba4b-00a0c93ec93b}')
+        $osParts=@($parts | Where-Object { ($_ | Get-Volume -ErrorAction SilentlyContinue).FileSystemLabel -eq $VMName })
+        if ($efiParts.Count -ne 1 -or $osParts.Count -ne 1) { throw 'Expected unique EFI and labelled lab OS partitions; no formatting is allowed in repair mode.' }
+        $efi=$efiParts[0]; $os=$osParts[0]
+        $destination="$($os.DriveLetter):\"
+        if (-not (Test-Path "${destination}Windows\System32\Config\SYSTEM")) { throw 'Applied Windows SYSTEM hive missing.' }
+    }
+    # Refresh CIM objects after formatting; EFI drive letters can change at format time.
+    $efi=Get-Partition -DiskNumber $disk.Number -PartitionNumber $efi.PartitionNumber
+    if (-not $efi.DriveLetter) {
+        $letter=90..76 | ForEach-Object { [char]$_ } | Where-Object { -not (Test-Path "$($_):\") } | Select-Object -First 1
+        if (-not $letter) { throw 'No free temporary EFI drive letter.' }
+        Add-PartitionAccessPath -DiskNumber $disk.Number -PartitionNumber $efi.PartitionNumber -AccessPath "${letter}:\"
+        $efi=Get-Partition -DiskNumber $disk.Number -PartitionNumber $efi.PartitionNumber
+    }
+    Write-Output "Initialising $VMName UEFI boot on $($efi.DriveLetter): from ${destination}Windows"
+    & "${destination}Windows\System32\bcdboot.exe" "${destination}Windows" /s "$($efi.DriveLetter):" /f UEFI /v
     if ($LASTEXITCODE -ne 0) { throw 'BCDBoot failed.' }
     $pointer=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($LocalPassword)
     try { $plain=[Runtime.InteropServices.Marshal]::PtrToStringBSTR($pointer) }
@@ -82,7 +104,7 @@ try {
     $null=New-Item -ItemType Directory -Path $panther -Force
     $unattend | Set-Content -LiteralPath (Join-Path $panther 'Unattend.xml') -Encoding UTF8
     $unattend=$null; $accounts=$null; $encodedAdmin=$null; $encodedLocal=$null
-    $image | Select-Object ImageIndex,ImageName
+    if (-not $ResumeAppliedImage) { $image | Select-Object ImageIndex,ImageName }
 } finally {
     if ($diskImage) { Dismount-DiskImage -ImagePath $diskImage.ImagePath | Out-Null }
     if ($mounted) { Dismount-VHD -Path $vhdPath }

@@ -4,6 +4,8 @@ A Windows Server 2022 and Windows 11 evaluation lab for practising the Active Di
 
 **Build status: implementation and local unit tests are available; live domain deployment and portfolio evidence are still in progress.** This repository does not yet demonstrate a completed domain join, applied GPOs, resolved tickets, recovery or a demo recording. See [verification status](evidence/README.md). Mocked Pester results validate script logic; they are not evidence of a running domain.
 
+[PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) runs static analysis and the offline tests. [Current deployment state and next steps](docs/current-state.md) records the real installation blocker.
+
 ## Architecture
 
 ```mermaid

@@ -1,7 +1,7 @@
 #Requires -RunAsAdministrator
 [CmdletBinding(SupportsShouldProcess,ConfirmImpact='High')]
 param(
-    [ValidateSet('Prepare','Configure')][string]$Stage='Prepare',
+    [ValidateSet('Prepare','Configure','ConfigureDC','ConfigureClient')][string]$Stage='Prepare',
     [string]$LabRoot='H:\My Projects - IT\windows-ad-lab\.lab'
 )
 $ErrorActionPreference='Stop'
@@ -70,12 +70,16 @@ if ($Stage -eq 'Prepare') {
     return
 }
 if (-not (Test-Path (Join-Path $LabRoot 'build-stage.txt'))) { throw 'Complete Prepare first.' }
-if ((Get-Content (Join-Path $LabRoot 'build-stage.txt') -Raw).Trim() -ne 'Prepared') { throw 'Configuration has already started; inspect progress before retrying.' }
-& "$PSScriptRoot\Start-Lab.ps1"
+$state=(Get-Content (Join-Path $LabRoot 'build-stage.txt') -Raw).Trim()
+$expected=if ($Stage -eq 'ConfigureClient') { 'DCConfigured' } else { 'Prepared' }
+if ($state -ne $expected) { throw "Expected stage $expected but found $state; inspect progress before retrying." }
+if ($Stage -eq 'ConfigureDC') { & "$PSScriptRoot\Start-Lab.ps1" -VMName DC01 }
+else { & "$PSScriptRoot\Start-Lab.ps1" }
 'Configuring - inspect logs before rerunning' | Set-Content (Join-Path $LabRoot 'build-stage.txt')
 $dcCredential=Import-Clixml (Join-Path $LabRoot 'credentials\dc.xml')
 $clientCredential=Import-Clixml (Join-Path $LabRoot 'credentials\client.xml')
 $dsrm=Import-Clixml (Join-Path $LabRoot 'credentials\dsrm.xml')
+if ($Stage -ne 'ConfigureClient') {
 $session=Open-LabSession DC01 $dcCredential
 try {
     Copy-LabSource $session
@@ -98,6 +102,11 @@ try {
         & C:\LabRepo\scripts\server\Initialize-LabBackupDisk.ps1 -Confirm:$false
     }
 } finally { Remove-PSSession $session }
+'DCConfigured' | Set-Content (Join-Path $LabRoot 'build-stage.txt')
+if ($Stage -eq 'ConfigureDC') { return }
+} else {
+    $domainCredential=[pscredential]::new('CORP\Administrator',$dcCredential.Password)
+}
 $session=Open-LabSession CLIENT01 $clientCredential
 try {
     Copy-LabSource $session

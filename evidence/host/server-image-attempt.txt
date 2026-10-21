@@ -1,0 +1,12 @@
+Actual machine transcript excerpt: DC01 image application, 21 October 2026, Australia/Sydney.
+Source attempt: 23:01-23:08 AEDT. Host-identifying transcript header/footer omitted.
+This records an image-apply success followed by a boot-file failure; it is not proof of a bootable VM.
+
+Deployment Image Servicing and Management tool
+Version: 10.0.26100.9549
+
+Applying image
+[==========================100.0%==========================]
+The operation completed successfully.
+Failure when attempting to copy boot files.
+PS>TerminatingError(): "BCDBoot failed."

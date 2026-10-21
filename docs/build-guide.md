@@ -32,11 +32,15 @@ Get-VMSecurity -VMName DC01,CLIENT01 | Select-Object VMName,TpmEnabled
 .\scripts\host\Invoke-LabBuild.ps1 -Stage Configure
 ```
 
+If other applications must stay open, configure only DC01 first with `-Stage ConfigureDC` (4 GiB free RAM for its 2 GiB startup plus host headroom). After that stage succeeds, use `-Stage ConfigureClient` when there is enough RAM for the stopped client plus 2 GiB host headroom. Keep DC01 running for client domain join and GPO. `Start-Lab.ps1` counts only powered-off requested VMs; it never closes applications or reduces Windows 11's 4 GiB minimum. A staged DC build is not proof of a completed client lab.
+
 Configure starts the guests, waits for PowerShell Direct, copies only lab source/data, promotes DC01 (guest restart), configures AD/DNS/DHCP, shares, a virtual print queue and GPOs, then joins CLIENT01 (guest restart) and installs RSAT. It uses Windows Update over NAT for capabilities. Promotion/join disconnects may be reported during expected guest restarts; inspect the guest before retrying. If first boot pauses in Windows setup, use VMConnect to inspect the exact screen and Panther setup logs. Do not bypass licence or security prompts blindly.
 
 Manual work is limited to Microsoft evaluation registration/licence review if prompted, host UAC approval, resolving host-specific prerequisites/conflicts, and interactive sign-in/console screenshots. The offline image path normally avoids interactive setup. If the particular evaluation build rejects the unattended file, inspect `C:\Windows\Panther\setuperr.log` in that guest and repair the configuration; do not claim a successful installation while OOBE is incomplete.
 
 For manual recovery from a partial Configure, use individual scripts inside the guests rather than rerunning Prepare:
+
+If image application succeeded but boot/setup configuration did not, `Install-LabGuestImage.ps1 -ResumeAppliedImage` validates the existing labelled GPT lab partitions and Windows SYSTEM hive, then retries boot/unattended setup. It never formats/reapplies in that mode. This repair path requires integration verification; see [current state](current-state.md) for the actual machine's blocker.
 
 ```powershell
 # Host -> DC01 with the local/domain admin password protected on this host:
