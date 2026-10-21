@@ -20,7 +20,7 @@ function Get-LabSecret {
     $secret
 }
 function Open-LabSession {
-    param([string]$Name,[pscredential]$Credential,[int]$TimeoutSeconds=1200)
+    param([string]$Name,[pscredential]$Credential,[int]$TimeoutSeconds=3600)
     $deadline=(Get-Date).AddSeconds($TimeoutSeconds)
     while ((Get-Date) -lt $deadline) {
         try { return New-PSSession -VMName $Name -Credential $Credential -ErrorAction Stop }
@@ -62,9 +62,8 @@ if ($Stage -eq 'Prepare') {
     $clientCredential | Export-Clixml (Join-Path $secretPath 'client.xml')
     $dsrmCredential | Export-Clixml (Join-Path $secretPath 'dsrm.xml')
     & "$PSScriptRoot\New-LabVMs.ps1" -LabRoot $LabRoot -ServerIso $serverIso -ClientIso $clientIso
-    & "$PSScriptRoot\Install-LabGuestImage.ps1" -VMName DC01 -IsoPath $serverIso -LocalPassword $serverCredential.Password -LabRoot $LabRoot -Confirm:$false
-    & "$PSScriptRoot\Install-LabGuestImage.ps1" -VMName CLIENT01 -IsoPath $clientIso -LocalPassword $clientCredential.Password -LabRoot $LabRoot -Confirm:$false
-    & "$PSScriptRoot\Add-LabBackupDisk.ps1" -LabRoot $LabRoot
+    & "$PSScriptRoot\New-LabSetupMedia.ps1" -VMName DC01 -LocalPassword $serverCredential.Password -LabRoot $LabRoot -Confirm:$false
+    & "$PSScriptRoot\New-LabSetupMedia.ps1" -VMName CLIENT01 -LocalPassword $clientCredential.Password -LabRoot $LabRoot -Confirm:$false
     Get-FileHash -LiteralPath $serverIso,$clientIso -Algorithm SHA256 | Select-Object Hash,@{n='File';e={Split-Path $_.Path -Leaf}} | Export-Csv (Join-Path $LabRoot 'iso-sha256.csv') -NoTypeInformation
     'Prepared' | Set-Content (Join-Path $LabRoot 'build-stage.txt')
     return
@@ -73,8 +72,8 @@ if (-not (Test-Path (Join-Path $LabRoot 'build-stage.txt'))) { throw 'Complete P
 $state=(Get-Content (Join-Path $LabRoot 'build-stage.txt') -Raw).Trim()
 $expected=if ($Stage -eq 'ConfigureClient') { 'DCConfigured' } else { 'Prepared' }
 if ($state -ne $expected) { throw "Expected stage $expected but found $state; inspect progress before retrying." }
-if ($Stage -eq 'ConfigureDC') { & "$PSScriptRoot\Start-Lab.ps1" -VMName DC01 }
-else { & "$PSScriptRoot\Start-Lab.ps1" }
+if ($Stage -eq 'ConfigureDC') { & "$PSScriptRoot\Start-Lab.ps1" -VMName DC01 -BootSetup }
+else { & "$PSScriptRoot\Start-Lab.ps1" -BootSetup }
 'Configuring - inspect logs before rerunning' | Set-Content (Join-Path $LabRoot 'build-stage.txt')
 $dcCredential=Import-Clixml (Join-Path $LabRoot 'credentials\dc.xml')
 $clientCredential=Import-Clixml (Join-Path $LabRoot 'credentials\client.xml')
@@ -93,6 +92,8 @@ Start-Sleep -Seconds 60
 $domainCredential=[pscredential]::new('CORP\Administrator',$dcCredential.Password)
 $session=Open-LabSession DC01 $domainCredential
 try {
+    $backupPath=Join-Path $LabRoot 'DC01\DC01-backup.vhdx'
+    if (-not (Test-Path $backupPath)) { & "$PSScriptRoot\Add-LabBackupDisk.ps1" -LabRoot $LabRoot }
     Invoke-Command -Session $session {
         $ErrorActionPreference='Stop'
         & C:\LabRepo\scripts\server\Initialize-LabDomain.ps1 -Confirm:$false

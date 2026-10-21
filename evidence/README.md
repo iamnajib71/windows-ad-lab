@@ -4,9 +4,10 @@ Only actual machine results belong here. Every item below is **pending** unless 
 
 | Evidence | Required proof | State |
 | --- | --- | --- |
-| Offline validation | [Machine-generated result](local-validation.json): 27/27 Pester tests, zero PSScriptAnalyzer findings; acceptance files parse only | Verified 21 October 2026, Australia/Sydney |
+| Offline validation | [Machine-generated result](local-validation.json): 26/26 current Pester tests, zero PSScriptAnalyzer findings; includes guest-setup XML and host-protection contracts | Verified 21 October 2026, Australia/Sydney |
+| Host safety snapshot | [Read-only machine results](host/windows-safety-check.json): C:/H: Healthy, lab VMs off, VHDX files detached, no remaining boot-repair process | Verified 21 October 2026; no pre/post boot-store binary comparison |
 | Host preparation | VM generation, Secure Boot/vTPM, paths on H:, switch and NAT | VMs/network created; final inventory pending |
-| Server image | [Actual DISM/BCDBoot transcript excerpt](host/server-image-attempt.txt) | Image applied successfully; boot-file setup failed; repair unverified |
+| Server image | [Actual DISM/BCDBoot transcript excerpt](host/server-image-attempt.txt) | Historical failed approach; host-side repair retired; guest-native setup pending |
 | Evaluation editions | `Get-ComputerInfo` / `DISM /Online /Get-CurrentEdition`, licence expiry from each guest | Pending |
 | Domain | `Get-ADDomain`; CLIENT01 `PartOfDomain=True`; DNS SRV and DHCP lease | Pending |
 | Onboarding/offboarding | Actual account, home ACL, group and leaver OU results | Pending |

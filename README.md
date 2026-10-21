@@ -53,7 +53,7 @@ All large host files belong under `H:\My Projects - IT\windows-ad-lab\.lab`. Gue
 .\scripts\host\Invoke-LabBuild.ps1 -Stage Configure
 ```
 
-Prepare creates powered-off Generation 2 VMs with Secure Boot and vTPM, applies the official evaluation Windows images to empty VHDX files, and stores random local/DSRM credentials as Windows DPAPI-protected CLIXML under an ACL-protected ignored directory. Configure uses PowerShell Direct to install the forest, OUs, DHCP, shares, policy and RSAT, then join CLIENT01. Reboots and first-boot setup take time. A failed stage needs inspection; scripts do not silently delete or overwrite partially built VMs.
+Prepare creates powered-off Generation 2 VMs with Secure Boot and vTPM, attaches the official evaluation ISOs plus private unattended setup media, and stores random local/DSRM credentials as Windows DPAPI-protected CLIXML under an ACL-protected ignored directory. **Windows Setup runs inside each VM and targets only that guest's virtual disk. No host boot-repair or physical-disk partitioning tools are used in the current workflow.** Configure boots the guests, waits for setup, then uses PowerShell Direct to install the forest, OUs, DHCP, shares, policy and RSAT and join CLIENT01. Reboots and first-boot setup take time. A failed stage needs inspection; scripts do not silently delete or overwrite partially built VMs. The guest-only setup path is implemented and unit-tested but still awaits live installation verification.
 
 ## Identity workflow
 

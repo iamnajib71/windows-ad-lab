@@ -1,0 +1,38 @@
+{
+  "CapturedAt": "2026-10-21T23:22:23.033466+11:00",
+  "Scope": "Read-only snapshot after stopping host-side lab boot repair; no pre/post boot-store binary comparison",
+  "HostBootEnumerationExitCode": 0,
+  "Volumes": [
+    {
+      "DriveLetter": "C",
+      "HealthStatus": "Healthy",
+      "SizeRemaining": 92200833024
+    },
+    {
+      "DriveLetter": "H",
+      "HealthStatus": "Healthy",
+      "SizeRemaining": 100110057472
+    }
+  ],
+  "LabVMs": [
+    {
+      "Name": "CLIENT01",
+      "State": "Off"
+    },
+    {
+      "Name": "DC01",
+      "State": "Off"
+    }
+  ],
+  "VHDs": [
+    {
+      "Path": "H:\\My Projects - IT\\windows-ad-lab\\.lab\\DC01\\DC01.vhdx",
+      "Attached": false
+    },
+    {
+      "Path": "H:\\My Projects - IT\\windows-ad-lab\\.lab\\CLIENT01\\CLIENT01.vhdx",
+      "Attached": false
+    }
+  ],
+  "RemainingBootRepairProcesses": 0
+}

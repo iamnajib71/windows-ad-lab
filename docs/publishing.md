@@ -8,7 +8,7 @@ git config user.email 'iam.najib@yahoo.com'
 git status --short
 git check-ignore .env AGENTS.md CLAUDE.md .lab/iso/server-2022-eval.iso
 # Review git diff --cached and confirm no secrets, CLIXML, VHDX or raw recordings.
-git add .github .gitignore .env.example LICENSE PSScriptAnalyzerSettings.psd1 README.md acceptance config data docs evidence scripts src tests
+git add .github .gitattributes .gitignore .env.example LICENSE PSScriptAnalyzerSettings.psd1 README.md acceptance config data docs evidence scripts src tests
 git diff --cached --check
 git commit -m 'Build Windows AD lab automation and support runbooks'
 gh repo create iamnajib71/windows-ad-lab --public --source . --remote origin

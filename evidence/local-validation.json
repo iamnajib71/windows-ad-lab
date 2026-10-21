@@ -1,13 +1,13 @@
 {
-  "CapturedAt": "2026-10-21T23:00:16.6263933+11:00",
+  "CapturedAt": "2026-10-21T23:36:39.9686225+11:00",
   "PowerShell": "7.6.5",
   "Pester": "5.7.1",
-  "TestsTotal": 27,
-  "TestsPassed": 27,
+  "TestsTotal": 26,
+  "TestsPassed": 26,
   "TestsFailed": 0,
   "PSScriptAnalyzer": "1.24.0",
   "AnalyzerIssues": 0,
-  "AcceptanceSyntaxErrors": 0,
   "LiveDomainAcceptanceExecuted": false,
-  "Scope": "Offline tests: mocked ActiveDirectory operations and local validation only"
+  "ISOWriterSmokeTest": "Passed with dummy payload: ISO9660 CD001 descriptor",
+  "Scope": "Mocked AD logic, local setup XML and host safety contracts only; no running domain claimed"
 }

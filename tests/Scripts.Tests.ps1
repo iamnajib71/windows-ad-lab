@@ -14,4 +14,10 @@ Describe 'PowerShell entry point contracts' {
         $ignore=Get-Content "$root/.gitignore"
         foreach ($entry in @('.env','AGENTS.md','CLAUDE.md','.lab/','.tools/','*.iso','*.vhd*')) { $ignore | Should -Contain $entry }
     }
+    It 'does not run host boot repair or physical disk partitioning tools' {
+        foreach ($file in Get-ChildItem "$root/scripts/host" -Filter *.ps1) {
+            $source=Get-Content $file.FullName -Raw
+            $source | Should -Not -Match 'bcdboot|bcdedit|dism\.exe|\b(Mount-VHD|Initialize-Disk|Format-Volume|New-Partition|Clear-Disk|Set-Partition)\b' -Because $file.Name
+        }
+    }
 }
