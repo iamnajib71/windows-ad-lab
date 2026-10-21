@@ -1,0 +1,157 @@
+INFO: Pester v5.7.1
+INFO: 
+Starting discovery in 1 files.
+INFO: Discovery found 10 tests in 304ms.
+INFO: Filter 'ExcludeTag' set to ('RequiresClient').
+INFO: Filters selected 9 tests to run.
+INFO: Running tests.
+INFO: 
+Running tests from 'C:\LabRepo\acceptance\Server.Acceptance.Tests.ps1'
+INFO: Describing Real DC01 services and directory
+INFO:   [+] is the corp.lab Microsoft AD forest
+INFO:  1.21s (1.12s|89ms)
+INFO:   [+] has running ADWS, DNS and DHCP
+INFO:  627ms (626ms|1ms)
+INFO:   [+] has the required protected OUs
+INFO:  2.53s (2.53s|1ms)
+INFO:   [+] authorises DC01 DHCP with the intended DNS options
+INFO:  2.7s (2.7s|1ms)
+INFO:   [+] resolves domain controller LDAP SRV records
+INFO:  3.11s (3.11s|1ms)
+INFO:   [+] has the expected domain password and lockout settings
+INFO:  573ms (556ms|17ms)
+INFO:   [+] has enabled Recycle Bin
+INFO:  209ms (208ms|1ms)
+INFO:   [+] has the department resource group nesting and ABE shares
+INFO:  4.4s (4.39s|1ms)
+INFO:   [+] has all named GPOs with enabled expected links
+INFO:  3.72s (3.72s|1ms)
+INFO: Tests completed in 27.28s
+INFO: Tests Passed: 9,
+INFO: Failed: 0,
+INFO: Skipped: 0,
+INFO: Inconclusive: 0,
+INFO:
+INFO: NotRun: 1
+Transcript started, output file is C:\LabEvidence\identity-workflow.txt
+
+
+Account        : alex.morgan
+Result         : Created
+Department     : Finance
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+Account        : jamie.chen
+Result         : Created
+Department     : HR
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+Account        : casey.taylor
+Result         : Created
+Department     : IT
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+SamAccountName : jamie.chen
+Enabled        : True
+Department     : HR
+Title          : People Coordinator
+mail           : jamie.chen@corp.example.invalid
+HomeDirectory  : \\DC01\Homes\jamie.chen
+pwdLastSet     : 134370628441663788
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+SamAccountName : alex.morgan
+Enabled        : True
+Department     : Finance
+Title          : Accounts Assistant
+mail           : alex.morgan@corp.example.invalid
+HomeDirectory  : \\DC01\Homes\alex.morgan
+pwdLastSet     : 134370628433328850
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+SamAccountName : casey.taylor
+Enabled        : True
+Department     : IT
+Title          : Service Desk Analyst
+mail           : casey.taylor@corp.example.invalid
+HomeDirectory  : \\DC01\Homes\casey.taylor
+pwdLastSet     : 134370628444632724
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+SamAccountName : alex.morgan
+pwdLastSet     : 0
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+Account        : leaver.demo
+Result         : Created
+Department     : IT
+PSComputerName : DC01
+RunspaceId     : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+SamAccountName    : leaver.demo
+Enabled           : True
+DistinguishedName : CN=Leaver Demo,OU=IT,OU=Staff,DC=corp,DC=lab
+PSComputerName    : DC01
+RunspaceId        : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+SamAccountName    : leaver.demo
+Enabled           : False
+DistinguishedName : CN=Leaver Demo,OU=Disabled,DC=corp,DC=lab
+MemberOf          : {}
+PSComputerName    : DC01
+RunspaceId        : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+
+
+
+
+Owner          : BUILTIN\Administrators
+AccessToString : NT AUTHORITY\SYSTEM Allow  FullControl
+                 BUILTIN\Administrators Allow  FullControl
+                 CORP\alex.morgan Allow  Modify, Synchronize
+
+
+
+Transcript stopped, output file is C:\LabEvidence\identity-workflow.txt
+Transcript started, output file is C:\LabEvidence\recycle-restore.txt
+
+
+SamAccountName    : recycle.demo
+ObjectGUID        : e65aaddb-7a18-4d45-9189-2398486f6837
+DistinguishedName : CN=Recycle Demo,OU=IT,OU=Staff,DC=corp,DC=lab
+Enabled           : False
+PSComputerName    : DC01
+RunspaceId        : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+ObjectGUID      : e65aaddb-7a18-4d45-9189-2398486f6837
+isDeleted       : True
+lastKnownParent : OU=IT,OU=Staff,DC=corp,DC=lab
+PSComputerName  : DC01
+RunspaceId      : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+PSComputerName    : DC01
+RunspaceId        : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+DistinguishedName : CN=Recycle Demo,OU=IT,OU=Staff,DC=corp,DC=lab
+Name              : Recycle Demo
+ObjectClass       : user
+ObjectGUID        : e65aaddb-7a18-4d45-9189-2398486f6837
+
+SamAccountName    : recycle.demo
+ObjectGUID        : e65aaddb-7a18-4d45-9189-2398486f6837
+DistinguishedName : CN=Recycle Demo,OU=IT,OU=Staff,DC=corp,DC=lab
+Enabled           : False
+PSComputerName    : DC01
+RunspaceId        : 63fe5957-ae2f-44b0-852a-45fc6978c7ff
+
+Transcript stopped, output file is C:\LabEvidence\recycle-restore.txt
+**********************
+Windows PowerShell transcript end
+End time: 20261022002733
+**********************

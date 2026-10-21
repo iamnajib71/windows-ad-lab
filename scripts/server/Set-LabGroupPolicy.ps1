@@ -38,7 +38,7 @@ foreach ($setting in @(
 )) {
     $null=Set-GPRegistryValue -Guid $baseline.Id -Key $setting[0] -ValueName $setting[1] -Type DWord -Value $setting[2]
 }
-$updates=Get-OrCreatePolicy 'LAB-Windows-Update' "OU=Computers,$dn"
+$updates=Get-OrCreatePolicy 'LAB-Windows-Update' "OU=Computers,OU=Lab,$dn"
 foreach ($setting in @(@('NoAutoUpdate',0),@('AUOptions',4),@('ScheduledInstallDay',0),@('ScheduledInstallTime',3),@('NoAutoRebootWithLoggedOnUsers',1))) {
     $null=Set-GPRegistryValue -Guid $updates.Id -Key 'HKLM\Software\Policies\Microsoft\Windows\WindowsUpdate\AU' -ValueName $setting[0] -Type DWord -Value $setting[1]
 }

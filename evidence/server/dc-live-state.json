@@ -1,0 +1,161 @@
+{
+    "CapturedAt":  "2026-10-22T00:14:46.4993515+11:00",
+    "Computer":  {
+                     "Name":  "DC01",
+                     "Domain":  "corp.lab",
+                     "PartOfDomain":  true
+                 },
+    "OS":  {
+               "Caption":  "Microsoft Windows Server 2022 Standard Evaluation",
+               "BuildNumber":  "20348"
+           },
+    "Domain":  {
+                   "DNSRoot":  "corp.lab",
+                   "NetBIOSName":  "CORP",
+                   "DomainMode":  7
+               },
+    "OUs":  [
+                {
+                    "Name":  "Domain Controllers",
+                    "DistinguishedName":  "OU=Domain Controllers,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Staff",
+                    "DistinguishedName":  "OU=Staff,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Admins",
+                    "DistinguishedName":  "OU=Admins,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Lab",
+                    "DistinguishedName":  "OU=Lab,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Disabled",
+                    "DistinguishedName":  "OU=Disabled,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Groups",
+                    "DistinguishedName":  "OU=Groups,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Computers",
+                    "DistinguishedName":  "OU=Computers,OU=Lab,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Finance",
+                    "DistinguishedName":  "OU=Finance,OU=Staff,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "Finance",
+                    "DistinguishedName":  "OU=Finance,OU=Groups,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "HR",
+                    "DistinguishedName":  "OU=HR,OU=Staff,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "HR",
+                    "DistinguishedName":  "OU=HR,OU=Groups,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "IT",
+                    "DistinguishedName":  "OU=IT,OU=Staff,DC=corp,DC=lab"
+                },
+                {
+                    "Name":  "IT",
+                    "DistinguishedName":  "OU=IT,OU=Groups,DC=corp,DC=lab"
+                }
+            ],
+    "Groups":  [
+                   {
+                       "Name":  "DL_Finance_Modify",
+                       "GroupScope":  0
+                   },
+                   {
+                       "Name":  "DL_HR_Modify",
+                       "GroupScope":  0
+                   },
+                   {
+                       "Name":  "DL_IT_Modify",
+                       "GroupScope":  0
+                   },
+                   {
+                       "Name":  "GG_Finance",
+                       "GroupScope":  1
+                   },
+                   {
+                       "Name":  "GG_HR",
+                       "GroupScope":  1
+                   },
+                   {
+                       "Name":  "GG_IT",
+                       "GroupScope":  1
+                   }
+               ],
+    "Policies":  [
+                     {
+                         "DisplayName":  "Default Domain Policy",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Security-Baseline",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Drive-Finance",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Windows-Update",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Domain-Account-Policy",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "Default Domain Controllers Policy",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Drive-HR",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Printer-Deployment",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Drive-IT",
+                         "GpoStatus":  3
+                     },
+                     {
+                         "DisplayName":  "LAB-Desktop-Restrictions",
+                         "GpoStatus":  3
+                     }
+                 ],
+    "Shares":  [
+                   {
+                       "Name":  "Finance",
+                       "Path":  "C:\\LabData\\Finance",
+                       "FolderEnumerationMode":  0
+                   },
+                   {
+                       "Name":  "Homes",
+                       "Path":  "C:\\LabData\\Homes",
+                       "FolderEnumerationMode":  0
+                   },
+                   {
+                       "Name":  "HR",
+                       "Path":  "C:\\LabData\\HR",
+                       "FolderEnumerationMode":  0
+                   },
+                   {
+                       "Name":  "IT",
+                       "Path":  "C:\\LabData\\IT",
+                       "FolderEnumerationMode":  0
+                   }
+               ]
+}

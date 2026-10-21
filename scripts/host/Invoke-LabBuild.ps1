@@ -34,6 +34,21 @@ function Copy-LabSource {
     foreach ($folder in @('scripts','src','data','config')) {
         Copy-Item -LiteralPath (Join-Path $repo $folder) -Destination C:\LabRepo -ToSession $Session -Recurse -Force
     }
+    $printerPackage=Join-Path $LabRoot 'drivers\GenericTextOnly'
+    if (-not (Test-Path -LiteralPath (Join-Path $printerPackage 'prnge001.inf'))) { throw 'Extract the signed evaluation-media printer package first; see the build guide.' }
+    Invoke-Command -Session $Session { $null=New-Item -ItemType Directory -Path C:\LabDrivers -Force }
+    Copy-Item -LiteralPath $printerPackage -Destination C:\LabDrivers -ToSession $Session -Recurse -Force
+}
+function Remove-LabSetupDrive {
+    [CmdletBinding(SupportsShouldProcess)]
+    param([ValidateSet('DC01','CLIENT01')][string]$Name)
+    # Run only after PowerShell Direct proves Windows has finished first boot.
+    # Removing both virtual optical drives also frees guest drive letters for backup.
+    foreach ($drive in @(Get-VMDvdDrive -VMName $Name)) {
+        if ($PSCmdlet.ShouldProcess($Name,'Remove virtual setup DVD drive')) {
+            Remove-VMDvdDrive -VMDvdDrive $drive -Confirm:$false
+        }
+    }
 }
 if ($Stage -eq 'Prepare') {
     $serverIso=Join-Path $LabRoot 'iso\server-2022-eval.iso'
@@ -46,6 +61,7 @@ if ($Stage -eq 'Prepare') {
         finally { if ($stream) { $stream.Dispose() } }
     }
     if ((Get-PSDrive -Name ([IO.Path]::GetPathRoot($LabRoot).Substring(0,1))).Free -lt 65GB) { throw 'Need at least 65 GiB free after ISO downloads for the initial installation and backup headroom.' }
+    & "$PSScriptRoot\Export-LabPrinterPackage.ps1" -LabRoot $LabRoot
     $secretPath=Join-Path $LabRoot 'credentials'
     $null=New-Item -ItemType Directory -Path $secretPath -Force
     $acl=[Security.AccessControl.DirectorySecurity]::new()
@@ -81,6 +97,7 @@ $dsrm=Import-Clixml (Join-Path $LabRoot 'credentials\dsrm.xml')
 if ($Stage -ne 'ConfigureClient') {
 $session=Open-LabSession DC01 $dcCredential
 try {
+    Remove-LabSetupDrive DC01
     Copy-LabSource $session
     $dsrmPassword=$dsrm.Password
     Invoke-Command -Session $session {
@@ -110,6 +127,7 @@ if ($Stage -eq 'ConfigureDC') { return }
 }
 $session=Open-LabSession CLIENT01 $clientCredential
 try {
+    Remove-LabSetupDrive CLIENT01
     Copy-LabSource $session
     Invoke-Command -Session $session {
         & C:\LabRepo\scripts\client\Join-LabDomain.ps1 -DomainCredential $using:domainCredential -Confirm:$false
@@ -121,7 +139,7 @@ try {
     Invoke-Command -Session $session {
         & C:\LabRepo\scripts\client\Install-LabRSAT.ps1
         # Pre-stage the inbox driver as an administrator; retain Point and Print protections.
-        Add-PrinterDriver -Name 'Generic / Text Only'
+        & C:\LabRepo\scripts\common\Install-LabPrinterDriver.ps1
         gpupdate.exe /force
         Get-CimInstance Win32_ComputerSystem | Select-Object Name,Domain,PartOfDomain
     }

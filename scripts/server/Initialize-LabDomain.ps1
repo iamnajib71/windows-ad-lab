@@ -7,10 +7,15 @@ Import-Module DhcpServer
 if ($env:COMPUTERNAME -ne 'DC01' -or (Get-ADDomain).DNSRoot -ne 'corp.lab') { throw 'Run on DC01 in corp.lab only.' }
 if ($PSCmdlet.ShouldProcess('corp.lab','Create lab OUs, AGDLP groups, DNS/DHCP, account policy and enable Recycle Bin')) {
     $dn='DC=corp,DC=lab'
-    foreach ($name in @('Staff','Admins','Computers','Disabled','Groups')) {
+    foreach ($name in @('Staff','Admins','Lab','Disabled','Groups')) {
         if (-not (Get-ADOrganizationalUnit -Filter "Name -eq '$name'" -SearchBase $dn -SearchScope OneLevel)) {
             New-ADOrganizationalUnit -Name $name -Path $dn -ProtectedFromAccidentalDeletion $true
         }
+    }
+    # The domain root already contains the built-in CN=Computers container.
+    $computerParent="OU=Lab,$dn"
+    if (-not (Get-ADOrganizationalUnit -Filter "Name -eq 'Computers'" -SearchBase $computerParent -SearchScope OneLevel)) {
+        New-ADOrganizationalUnit -Name Computers -Path $computerParent -ProtectedFromAccidentalDeletion $true
     }
     foreach ($department in @('Finance','HR','IT')) {
         foreach ($parent in @('Staff','Groups')) {

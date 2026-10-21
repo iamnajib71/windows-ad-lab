@@ -1,8 +1,8 @@
 # Windows Active Directory Support Lab
 
-A Windows Server 2022 and Windows 11 evaluation lab for practising the Active Directory, Group Policy and troubleshooting work expected in Melbourne service desk, desktop support and junior sysadmin roles.
+A Windows Server 2022 and Windows 11 evaluation lab with automated Active Directory administration, Group Policy, file services and support troubleshooting.
 
-**Build status: implementation and local unit tests are available; live domain deployment and portfolio evidence are still in progress.** This repository does not yet demonstrate a completed domain join, applied GPOs, resolved tickets, recovery or a demo recording. See [verification status](evidence/README.md). Mocked Pester results validate script logic; they are not evidence of a running domain.
+**Build status: DC01 is running Windows Server 2022 Evaluation with the `corp.lab` forest. Nine live server checks passed; fictional onboarding/offboarding and a Recycle Bin restore have been executed.** Client deployment, client policy results, RSAT, worked tickets, System State backup and the demo remain incomplete. See [actual server evidence](evidence/server/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
 
 [PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) runs static analysis and the offline tests. [Current deployment state and next steps](docs/current-state.md) records the real installation blocker.
 
@@ -26,7 +26,7 @@ flowchart TB
 
 This is the intended topology, not an assertion that deployment has finished. The internal switch is not bridged to the home LAN. DHCP is provided only by DC01 inside this subnet. NAT supplies outbound access for activation and updates without a second NIC on the DC. No inbound port forwarding is created.
 
-## Skills mapped to job advertisements
+## Capabilities and verification
 
 | Keyword | Implementation | Evidence to collect |
 | --- | --- | --- |
@@ -53,7 +53,7 @@ All large host files belong under `H:\My Projects - IT\windows-ad-lab\.lab`. Gue
 .\scripts\host\Invoke-LabBuild.ps1 -Stage Configure
 ```
 
-Prepare creates powered-off Generation 2 VMs with Secure Boot and vTPM, attaches the official evaluation ISOs plus private unattended setup media, and stores random local/DSRM credentials as Windows DPAPI-protected CLIXML under an ACL-protected ignored directory. **Windows Setup runs inside each VM and targets only that guest's virtual disk. No host boot-repair or physical-disk partitioning tools are used in the current workflow.** Configure boots the guests, waits for setup, then uses PowerShell Direct to install the forest, OUs, DHCP, shares, policy and RSAT and join CLIENT01. Reboots and first-boot setup take time. A failed stage needs inspection; scripts do not silently delete or overwrite partially built VMs. The guest-only setup path is implemented and unit-tested but still awaits live installation verification.
+Prepare creates powered-off Generation 2 VMs with Secure Boot and vTPM, attaches the official evaluation ISOs plus private unattended setup media, and stores random local/DSRM credentials as Windows DPAPI-protected CLIXML under an ACL-protected ignored directory. **Windows Setup runs inside each VM and targets only that guest's virtual disk. No host boot-repair or physical-disk partitioning tools are used in the current workflow.** Configure boots the guests, waits for setup, then uses PowerShell Direct to install the forest, OUs, DHCP, shares, policy and RSAT and join CLIENT01. Reboots and first-boot setup take time. A failed stage needs inspection; scripts do not silently delete or overwrite partially built VMs. DC01 has reached a verified domain-controller state; client installation still awaits live verification.
 
 ## Identity workflow
 
@@ -106,6 +106,6 @@ Invoke-ScriptAnalyzer -Path .\src -Recurse -Settings .\PSScriptAnalyzerSettings.
 - The SMB-signing/LLMNR settings are a focused exercise, not a complete Microsoft security baseline. Legacy Windows Update policy effectiveness and printer behaviour must be checked on the downloaded client build.
 - The backup disk shares the same physical H: drive as the guests. It demonstrates System State commands, not protection against host/disk loss. Checkpoints are not AD backups.
 - No Entra ID, Intune, hybrid identity or Microsoft 365 administration is demonstrated here.
-- No fabricated screenshots, sample transcripts presented as results, or simulated demo GIF. Live evidence remains pending until recorded on the actual VMs.
+- Committed server results are actual guest outputs. Client, ticket and demo evidence remains pending; no simulated recordings are presented as live results.
 
 MIT licence. Commit identity: Nazmul Hassan.

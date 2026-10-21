@@ -11,9 +11,10 @@ Describe 'Real DC01 services and directory' {
         foreach ($name in @('ADWS','DNS','DHCPServer')) { (Get-Service $name).Status | Should -Be Running }
     }
     It 'has the required protected OUs' {
-        foreach ($name in @('Staff','Admins','Computers','Disabled','Groups')) {
+        foreach ($name in @('Staff','Admins','Lab','Disabled','Groups')) {
             (Get-ADOrganizationalUnit -Identity "OU=$name,DC=corp,DC=lab" -Properties ProtectedFromAccidentalDeletion).ProtectedFromAccidentalDeletion | Should -BeTrue
         }
+        (Get-ADOrganizationalUnit -Identity 'OU=Computers,OU=Lab,DC=corp,DC=lab' -Properties ProtectedFromAccidentalDeletion).ProtectedFromAccidentalDeletion | Should -BeTrue
     }
     It 'authorises DC01 DHCP with the intended DNS options' {
         @(Get-DhcpServerInDC | Where-Object DnsName -eq 'DC01.corp.lab').Count | Should -Be 1
@@ -30,8 +31,8 @@ Describe 'Real DC01 services and directory' {
         $policy.ComplexityEnabled | Should -BeTrue
     }
     It 'has enabled Recycle Bin' { @((Get-ADOptionalFeature 'Recycle Bin Feature').EnabledScopes).Count | Should -BeGreaterThan 0 }
-    It 'has CLIENT01 in the intended Computers OU' {
-        (Get-ADComputer CLIENT01).DistinguishedName | Should -BeLike '*,OU=Computers,DC=corp,DC=lab'
+    It 'has CLIENT01 in the intended Computers OU' -Tag RequiresClient {
+        (Get-ADComputer CLIENT01).DistinguishedName | Should -BeLike '*,OU=Computers,OU=Lab,DC=corp,DC=lab'
     }
     It 'has the department resource group nesting and ABE shares' {
         foreach ($department in @('Finance','HR','IT')) {
@@ -45,7 +46,7 @@ Describe 'Real DC01 services and directory' {
     It 'has all named GPOs with enabled expected links' {
         $expected=@{
             'DC=corp,DC=lab'=@('LAB-Domain-Account-Policy','LAB-Security-Baseline')
-            'OU=Computers,DC=corp,DC=lab'=@('LAB-Windows-Update')
+            'OU=Computers,OU=Lab,DC=corp,DC=lab'=@('LAB-Windows-Update')
             'OU=Staff,DC=corp,DC=lab'=@('LAB-Desktop-Restrictions','LAB-Drive-Finance','LAB-Drive-HR','LAB-Drive-IT','LAB-Printer-Deployment')
         }
         foreach ($target in $expected.Keys) {

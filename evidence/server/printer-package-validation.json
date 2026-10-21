@@ -1,0 +1,9 @@
+{
+  "CapturedAt": "2026-10-22T01:16:27.9844951+11:00",
+  "Source": "Official Server 2022 evaluation ISO, Desktop Experience image 2",
+  "Script": "scripts/host/Export-LabPrinterPackage.ps1",
+  "INF_SHA256": "6EA96C0E12EC5B433111358CFA47FE8B50CD9D94DB7B8E60D2A2F435C658555F",
+  "MatchesAcceptedPackage": true,
+  "Files": 13,
+  "Storage": "H: only; existing ISO/WIM hard linked for this smoke test"
+}

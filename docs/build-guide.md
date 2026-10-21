@@ -10,6 +10,8 @@ Download [Server 2022 evaluation](https://www.microsoft.com/en-us/evalcenter/dow
 
 Check `192.168.77.0/24` does not overlap LAN/VPN/other virtual networks using `Get-NetRoute -AddressFamily IPv4` and `Get-NetIPAddress -AddressFamily IPv4`. Change every lab address consistently if needed. Existing unrelated WinNAT configurations cause a stop for inspection. `config/lab.psd1` is a reference inventory; scripts contain explicit lab defaults.
 
+Prepare also needs the free [official 7-Zip archive tool](https://www.7-zip.org/download.html), placed at `.tools\7zip\portable\7z.exe` with its matching DLL. `Export-LabPrinterPackage.ps1` extracts ordinary files on H: to obtain the original Microsoft Generic/Text driver and catalog from image 2 (Desktop Experience) of the same Server evaluation ISO. The package stays ignored under `.lab\drivers\GenericTextOnly`; no Windows binaries are committed. PnPUtil verifies and stages it inside each guest, then the print driver is registered there. The real catalog check returned a valid Microsoft Windows signature. WIM extraction adds roughly 4 GiB of temporary storage on H:.
+
 ## Guest-only installation
 
 ```powershell
@@ -22,7 +24,7 @@ Get-NetNat
 
 Prepare creates the network, blank Gen 2 VMs, local-key-protected vTPM and Secure Boot. Random credentials are DPAPI-protected in `.lab\credentials\{dc,client,dsrm}.xml` with a local ACL. Only the same Windows user on the same host can normally decrypt them. No product keys are supplied.
 
-`New-LabSetupMedia.ps1` creates a small **data ISO on H:** containing Autounattend.xml through Windows IMAPI. This ISO/source folder contain encoded passwords, which remain secrets. Both are ignored and ACL-protected. The official bootable Windows ISO is attached separately, never extracted or run on the host.
+`New-LabSetupMedia.ps1` creates a small **data ISO on H:** containing Autounattend.xml through Windows IMAPI. This ISO/source folder contain encoded passwords, which remain secrets. Both are ignored and ACL-protected. The official bootable Windows ISO is attached separately. Windows Setup runs inside the VM; the host only reads the ISO archive to obtain the printer package described above.
 
 Windows Setup searches removable read-only media for an answer file ([Microsoft reference](https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-automation-overview?view=windows-11)). The answer file selects evaluation image index 1, guest name/locale/account, and guest disk 0 / partition 3. Media creation requires exactly one lab OS VHDX at virtual SCSI 0:0, detached from the host. The backup disk is added after DC OS installation.
 
@@ -42,7 +44,7 @@ Start-Lab counts only stopped requested VMs. It sends one Space through Hyper-V'
 
 Configure waits up to an hour per first-boot PowerShell Direct session, promotes DC01 (guest restart), configures AD/DNS/DHCP/shares/policy/print queue, joins CLIENT01 (guest restart) and installs RSAT. Capabilities need outbound Internet via NAT. Install current Windows servicing updates in both guests before treating the focused baseline as validated.
 
-Manual actions are evaluation registration/licence review if prompted, UAC approval, resource/network conflicts, setup prompts not handled by the answer file, interactive user sign-in and console evidence. Do not bypass authentication/security/licence prompts. Inspect guest Panther errors before changing setup. The unattended path still needs live verification on the downloaded build.
+Manual actions are evaluation registration/licence review if prompted, UAC approval, resource/network conflicts, setup prompts not handled by the answer file, interactive user sign-in and console evidence. Do not bypass authentication/security/licence prompts. Inspect guest Panther errors before changing setup. DC01 reached a verified domain-controller state on the downloaded build; client setup and sign-in remain pending.
 
 ## Inspect and recover partial builds
 

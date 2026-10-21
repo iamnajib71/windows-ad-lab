@@ -1,5 +1,5 @@
 {
-  "CapturedAt": "2026-10-21T23:36:39.9686225+11:00",
+  "CapturedAt": "2026-10-22T01:10:32.8251948+11:00",
   "PowerShell": "7.6.5",
   "Pester": "5.7.1",
   "TestsTotal": 26,
@@ -7,7 +7,7 @@
   "TestsFailed": 0,
   "PSScriptAnalyzer": "1.24.0",
   "AnalyzerIssues": 0,
-  "LiveDomainAcceptanceExecuted": false,
-  "ISOWriterSmokeTest": "Passed with dummy payload: ISO9660 CD001 descriptor",
-  "Scope": "Mocked AD logic, local setup XML and host safety contracts only; no running domain claimed"
+  "OfflineValidationOnly": true,
+  "SeparateLiveServerAcceptance": "server/server-acceptance.json",
+  "Scope": "Mocked AD logic, local setup XML, operational entry point contracts and host protection checks"
 }

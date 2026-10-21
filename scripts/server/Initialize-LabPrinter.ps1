@@ -7,7 +7,7 @@ if ($PSCmdlet.ShouldProcess('DC01 / LAB-Printer','Install a lab-only print servi
     $null=Install-WindowsFeature Print-Server -IncludeManagementTools
     Import-Module PrintManagement
     if (-not (Get-PrinterDriver -Name 'Generic / Text Only' -ErrorAction SilentlyContinue)) {
-        Add-PrinterDriver -Name 'Generic / Text Only'
+        & "$PSScriptRoot\..\common\Install-LabPrinterDriver.ps1"
     }
     if (-not (Get-PrinterPort -Name 'NUL:' -ErrorAction SilentlyContinue)) { Add-PrinterPort -Name 'NUL:' }
     if (-not (Get-Printer -Name LAB-Printer -ErrorAction SilentlyContinue)) {

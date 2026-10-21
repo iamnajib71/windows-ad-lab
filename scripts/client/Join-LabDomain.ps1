@@ -9,5 +9,5 @@ if ($PSCmdlet.ShouldProcess('CLIENT01','Set DNS and join corp.lab / Computers OU
     if (@($adapter).Count -ne 1) { throw 'Use one adapter on the lab switch.' }
     Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses '192.168.77.10'
     $null=Resolve-DnsName '_ldap._tcp.dc._msdcs.corp.lab' -Type SRV -Server '192.168.77.10'
-    Add-Computer -DomainName 'corp.lab' -OUPath 'OU=Computers,DC=corp,DC=lab' -Credential $DomainCredential -Restart
+    Add-Computer -DomainName 'corp.lab' -OUPath 'OU=Computers,OU=Lab,DC=corp,DC=lab' -Credential $DomainCredential -Restart
 }

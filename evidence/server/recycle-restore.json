@@ -1,0 +1,11 @@
+{
+    "CapturedAt":  "2026-10-22T00:27:29.1158687+11:00",
+    "BeforeGuid":  "e65aaddb-7a18-4d45-9189-2398486f6837",
+    "DeletedGuid":  "e65aaddb-7a18-4d45-9189-2398486f6837",
+    "WasDeleted":  true,
+    "RestoredGuid":  "e65aaddb-7a18-4d45-9189-2398486f6837",
+    "OriginalOU":  "CN=Recycle Demo,OU=IT,OU=Staff,DC=corp,DC=lab",
+    "RestoredOU":  "CN=Recycle Demo,OU=IT,OU=Staff,DC=corp,DC=lab",
+    "Enabled":  false,
+    "GuidMatches":  true
+}

@@ -92,6 +92,7 @@ Describe 'Identity safety and orchestration (mocked AD)' {
         Should -Invoke New-ADUser -ModuleName Lab.Identity -Times 3 -Exactly -ParameterFilter { -not $Enabled -and $ChangePasswordAtLogon -and $HomeDrive -eq 'H:' -and $EmailAddress -like '*@corp.example.invalid' }
         Should -Invoke Set-Acl -ModuleName Lab.Identity -Times 3 -Exactly
         Should -Invoke Enable-ADAccount -ModuleName Lab.Identity -Times 3 -Exactly
+        Should -Invoke Set-ADUser -ModuleName Lab.Identity -Times 3 -Exactly -ParameterFilter { $ChangePasswordAtLogon -eq $true }
     }
     It 'keeps partial onboarding disabled if home ACL configuration fails' {
         Mock New-Item -ModuleName Lab.Identity {}

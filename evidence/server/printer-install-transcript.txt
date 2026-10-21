@@ -1,0 +1,22 @@
+Microsoft PnP Utility
+
+Adding driver package:  prnge001.inf
+Driver package added successfully.
+Published Name:         oem2.inf
+
+Total driver packages:  1
+Added driver packages:  1
+
+
+Name           : LAB-Printer
+DriverName     : Generic / Text Only
+PortName       : NUL:
+Shared         : True
+ShareName      : LAB-Printer
+PSComputerName : DC01
+RunspaceId     : 6b398b28-ad5f-4e5f-9546-88c74b51a996
+
+**********************
+Windows PowerShell transcript end
+End time: 20261022003759
+**********************

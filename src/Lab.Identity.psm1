@@ -99,6 +99,7 @@ function Invoke-LabOnboarding {
                 Set-Acl -LiteralPath $folder -AclObject $acl
                 Add-ADGroupMember -Identity $item.Group -Members $item.SamAccountName -Server $script:Server
                 Enable-ADAccount -Identity $item.SamAccountName -Server $script:Server
+                Set-ADUser -Identity $item.SamAccountName -ChangePasswordAtLogon $true -Server $script:Server
                 [pscustomobject]@{ Account=$item.SamAccountName; Result='Created'; Department=$item.Department }
             } catch {
                 if ($created) { Disable-ADAccount -Identity $item.SamAccountName -Server $script:Server }
