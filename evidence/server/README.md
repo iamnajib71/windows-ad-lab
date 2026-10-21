@@ -15,3 +15,5 @@ The executed identity commands were `New-LabUser.ps1` with `data/onboarding.csv`
 The object-recovery commands match [the recovery runbook](../../docs/recovery.md). The restored object was disabled before deletion and remains disabled. No full System State restore is claimed.
 
 CLIENT01 domain membership, user/computer `gpresult`, applied drive/printer preferences, RSAT GUI use, ticket screenshots, positive/negative client share access, System State backup and the demo remain pending.
+
+`sha256.csv` hashes the published Git blob bytes of the machine-generated JSON and transcript files. Git may convert line endings in a Windows checkout; use the raw published files or `git show` bytes when verifying these hashes. This explanatory README is excluded from the manifest.
