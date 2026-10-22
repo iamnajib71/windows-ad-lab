@@ -1,0 +1,10 @@
+{
+    "CapturedAt":  "2026-10-22T14:53:16.1494186+11:00",
+    "Scope":  "Actual DC01 services including CLIENT01 machine account",
+    "Passed":  10,
+    "Failed":  0,
+    "NotRun":  0,
+    "Failures":  [
+
+                 ]
+}

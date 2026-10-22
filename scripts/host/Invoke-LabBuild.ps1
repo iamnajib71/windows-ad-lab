@@ -153,7 +153,13 @@ try {
         Invoke-Command -Session $session {
             $computer=Get-CimInstance Win32_ComputerSystem
             if ($computer.Name -ne 'CLIENT01' -or -not $computer.PartOfDomain -or $computer.Domain -ne 'corp.lab') { throw 'Resume requires verified CLIENT01 membership in corp.lab.' }
-            if (-not (Test-ComputerSecureChannel)) { throw 'Repair the client secure channel before resuming configuration.' }
+            $channelDeadline=(Get-Date).AddMinutes(3)
+            do {
+                $healthy=Test-ComputerSecureChannel -Server DC01.corp.lab -ErrorAction SilentlyContinue
+                if ($healthy) { break }
+                Start-Sleep -Seconds 5
+            } while ((Get-Date) -lt $channelDeadline)
+            if (-not $healthy) { throw 'The client secure channel remains unhealthy after waiting for DC startup; diagnose before repairing.' }
         }
     } else {
         $clientBootBefore=Invoke-Command -Session $session { (Get-CimInstance Win32_OperatingSystem).LastBootUpTime }

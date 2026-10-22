@@ -2,7 +2,18 @@
 
 A Windows Server 2022 and Windows 11 evaluation lab with automated Active Directory administration, Group Policy, file services and support troubleshooting.
 
-**Build status: DC01 is configured with Windows Server 2022 Evaluation and the `corp.lab` forest. Nine live server checks passed; fictional onboarding/offboarding, a Recycle Bin restore and a System State backup have been executed.** CLIENT01 runs Windows 11 Enterprise Evaluation, has joined `corp.lab`, received a DHCP lease and passed a secure-channel check. Policy results, RSAT, worked tickets and the demo remain incomplete. See [actual server evidence](evidence/server/README.md), [client checks](evidence/client/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
+## Project overview
+
+| Area | What to look for |
+| --- | --- |
+| **Problem addressed** | Repeated account administration and desktop access faults need consistent procedures, scoped permissions and observable results. |
+| **Implemented work** | Built a real Microsoft AD DS forest with DNS/DHCP, department OUs and groups, CSV identity workflows, file shares, eight GPOs, a domain-joined client, object recovery and a System State backup. Moved VM storage to a data SSD after diagnosing guest I/O delays. |
+| **Skills demonstrated** | Windows Server, Active Directory, PowerShell, Group Policy, DNS, DHCP, AGDLP, NTFS/share permissions, backup and systematic troubleshooting. |
+| **Demo** | [Actual machine evidence](evidence/README.md) is available. The onboarding and client-policy GIF is pending; no completed demonstration is claimed yet. |
+| **How to use it** | Follow the [build guide](docs/build-guide.md), then the [identity workflow](#identity-workflow) and [operations guide](docs/operations.md). Preview changes with `-WhatIf`; verify outcomes inside the guests. |
+| **Verification** | [10 live server checks](evidence/server/server-with-client-acceptance.json) passed, alongside [27 offline tests and static analysis](evidence/local-validation.json). Client policy, RSAT and ticket acceptance remain separate outstanding checks. |
+
+**Build status:** DC01 is configured with Windows Server 2022 Evaluation and the `corp.lab` forest. Fictional onboarding/offboarding, a Recycle Bin restore and a System State backup have been executed. CLIENT01 runs Windows 11 Enterprise Evaluation, has joined `corp.lab`, received a DHCP lease and passed a secure-channel check. Both VMs now use the E: SSD; the repository, ISOs and evidence remain on H:. Policy results, RSAT, worked tickets and the demo remain incomplete. See [server evidence](evidence/server/README.md), [client checks](evidence/client/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
 
 [PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) runs static analysis and the offline tests. [Current deployment state and next steps](docs/current-state.md) records the real installation blocker.
 
@@ -24,7 +35,7 @@ flowchart TB
     Client -->|corp.lab DNS / domain logon / SMB / policy| DC
 ```
 
-This is the intended topology, not an assertion that deployment has finished. The internal switch is not bridged to the home LAN. DHCP is provided only by DC01 inside this subnet. NAT supplies outbound access for activation and updates without a second NIC on the DC. No inbound port forwarding is created.
+This is the deployed infrastructure topology; client policy and troubleshooting evidence remain in progress. The internal switch is not bridged to the home LAN. DHCP is provided only by DC01 inside this subnet. NAT supplies outbound access for activation and updates without a second NIC on the DC. No inbound port forwarding is created.
 
 ## Capabilities and verification
 
@@ -55,7 +66,7 @@ VM memory is capped at 2 GiB for DC01 and 4 GiB for CLIENT01. Startup checks ret
 .\scripts\host\Invoke-LabBuild.ps1 -Stage Configure
 ```
 
-Prepare creates powered-off Generation 2 VMs with Secure Boot and vTPM, attaches the official evaluation ISOs plus private unattended setup media, and stores random local/DSRM credentials as Windows DPAPI-protected CLIXML under an ACL-protected ignored directory. **Windows Setup runs inside each VM and targets only that guest's virtual disk. No host boot-repair or physical-disk partitioning tools are used in the current workflow.** Configure boots the guests, waits for setup, then uses PowerShell Direct to install the forest, OUs, DHCP, shares, policy and RSAT and join CLIENT01. Reboots and first-boot setup take time. A failed stage needs inspection; scripts do not silently delete or overwrite partially built VMs. DC01 has reached a verified domain-controller state; client installation still awaits live verification.
+Prepare creates powered-off Generation 2 VMs with Secure Boot and vTPM, attaches the official evaluation ISOs plus private unattended setup media, and stores random local/DSRM credentials as Windows DPAPI-protected CLIXML under an ACL-protected ignored directory. **Windows Setup runs inside each VM and targets only that guest's virtual disk. No host boot-repair or physical-disk partitioning tools are used in the current workflow.** Configure boots the guests, waits for setup, then uses PowerShell Direct to install the forest, OUs, DHCP, shares, policy and RSAT and join CLIENT01. Reboots and first-boot setup take time. A failed stage needs inspection; scripts do not silently delete or overwrite partially built VMs. DC01 and CLIENT01 are installed and domain membership is verified; the client management-tools installation is still in progress.
 
 ## Identity workflow
 

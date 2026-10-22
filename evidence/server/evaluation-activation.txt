@@ -1,0 +1,19 @@
+Transcript started, output file is C:\LabEvidence\evaluation-activation.txt
+Activating Windows(R), ServerStandardEval edition (c1a197b6-ba5e-4394-b9bf-b659a6c1b873) ...
+Product activated successfully.
+
+Windows(R), ServerStandardEval edition:
+    Timebased activation will expire 20/04/2027 3:13:42 PM
+
+
+
+Name                 : Windows(R), ServerStandardEval edition
+Description          : Windows(R) Operating System, TIMEBASED_EVAL channel
+LicenseStatus        : 1
+GracePeriodRemaining : 259200
+EvaluationEndDate    : 1/01/1601 11:00:00 AM
+
+
+
+Transcript stopped, output file is C:\LabEvidence\evaluation-activation.txt
+

@@ -1,0 +1,51 @@
+{
+    "CapturedAt":  "2026-10-22T14:47:29.5273358+11:00",
+    "Method":  "Hyper-V Move-VMStorage with both guests shut down normally",
+    "VMs":  [
+                {
+                    "Name":  "CLIENT01",
+                    "State":  "Off",
+                    "Path":  "E:\\WindowsADLab\\CLIENT01",
+                    "SnapshotFileLocation":  "E:\\WindowsADLab\\CLIENT01",
+                    "SmartPagingFilePath":  "E:\\WindowsADLab\\CLIENT01"
+                },
+                {
+                    "Name":  "DC01",
+                    "State":  "Off",
+                    "Path":  "E:\\WindowsADLab\\DC01",
+                    "SnapshotFileLocation":  "E:\\WindowsADLab\\DC01",
+                    "SmartPagingFilePath":  "E:\\WindowsADLab\\DC01"
+                }
+            ],
+    "Disks":  [
+                  {
+                      "VMName":  "CLIENT01",
+                      "Path":  "E:\\WindowsADLab\\CLIENT01\\Virtual Hard Disks\\CLIENT01.vhdx"
+                  },
+                  {
+                      "VMName":  "DC01",
+                      "Path":  "E:\\WindowsADLab\\DC01\\Virtual Hard Disks\\DC01.vhdx"
+                  },
+                  {
+                      "VMName":  "DC01",
+                      "Path":  "E:\\WindowsADLab\\DC01\\Virtual Hard Disks\\DC01-backup.vhdx"
+                  }
+              ],
+    "Volumes":  [
+                    {
+                        "DriveLetter":  "C",
+                        "HealthStatus":  "Healthy",
+                        "FreeGiB":  85.91
+                    },
+                    {
+                        "DriveLetter":  "H",
+                        "HealthStatus":  "Healthy",
+                        "FreeGiB":  207.38
+                    },
+                    {
+                        "DriveLetter":  "E",
+                        "HealthStatus":  "Healthy",
+                        "FreeGiB":  95.26
+                    }
+                ]
+}

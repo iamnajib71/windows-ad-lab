@@ -2,8 +2,8 @@
 
 Verified on the actual lab:
 
-- DC01 runs Windows Server 2022 Standard Evaluation Core and is the domain controller for `corp.lab` / `CORP`. The official ISOs, VM storage and temporary archive files are on H:.
-- [Nine live server checks passed](../evidence/server/server-acceptance.json): directory identity, ADWS/DNS/DHCP services, protected OUs, DHCP authorisation/options, LDAP SRV resolution, password/lockout policy, Recycle Bin, AGDLP/ABE shares and expected GPO links. The CLIENT01 membership test was explicitly excluded.
+- DC01 runs Windows Server 2022 Standard Evaluation Core and is the domain controller for `corp.lab` / `CORP`. The official ISOs, repository and evidence remain on H:. Both VM storage trees now live under E:\WindowsADLab on the data SSD.
+- [Ten live server checks passed](../evidence/server/server-with-client-acceptance.json): directory identity, ADWS/DNS/DHCP services, protected OUs, DHCP authorisation/options, LDAP SRV resolution, password/lockout policy, Recycle Bin, AGDLP/ABE shares and expected GPO links. The complete rerun includes CLIENT01 in the managed Computers OU; the earlier nine-check result remains as historical evidence.
 - The managed Computers OU is `OU=Computers,OU=Lab,DC=corp,DC=lab`, avoiding the built-in root Computers container. Staff, Admins, Disabled and department Groups OUs are present.
 - Three fictional CSV staff accounts were created, a password reset required change at next sign-in, and a separate leaver was disabled, stripped of direct groups and moved to Disabled. The private home ACL was inspected. [Actual results](../evidence/server/identity-and-recovery-transcript.txt).
 - The disposable `recycle.demo` object was deleted and restored with the same GUID and original OU, remaining disabled. [Restore result](../evidence/server/recycle-restore.json).
@@ -15,9 +15,9 @@ Verified on the actual lab:
 Outstanding:
 
 - CLIENT01 has completed setup and booted Windows 11 Enterprise Evaluation build 26300. Its setup DVD drives were removed. [Actual first-boot inventory](../evidence/client/client-first-boot.json). DC01 has a CLIENT01 account in the managed Computers OU and an active `.100` DHCP lease. [Actual server observations](../evidence/server/client-account-and-lease.txt). Post-restart membership and secure-channel verification succeeded.
-- VM RAM is capped at 2 GiB for DC01 and 4 GiB for CLIENT01. The 2 GiB host startup headroom check remains enabled. Storage relocation to a data SSD was approved after the client recorded long I/O delays on H:; completion of that move still needs verification.
+- VM RAM is capped at 2 GiB for DC01 and 4 GiB for CLIENT01. The 2 GiB host startup headroom check remains enabled. Storage relocation completed after normal shutdown of both guests using Hyper-V Move-VMStorage. [Actual paths and selected volume inventory](../evidence/host/storage-move-verification.json) confirm E: VM storage, with C: unchanged by that move.
 - CLIENT01 membership, its DHCP lease and a healthy secure channel have been verified. [Actual client checks](../evidence/client/README.md). Applied GPOs/`gpresult`, RSAT screenshots, five executed ticket evidence sets and the 30–90 second demo GIF are pending. No v1.0.0 release has been published.
-- Evaluation activation/expiry and current servicing levels still require collection from each guest.
+- [Server evaluation activation](../evidence/server/evaluation-activation.txt) succeeded, with expiry reported as 20 April 2027 at 15:13. Client activation and current servicing levels still require verification. RSAT is installing through Windows Update; its first capability completed without a reboot requirement. The signed printer driver is registered on CLIENT01, but staff printer policy is not yet verified.
 
 The original host-side boot-file approach was stopped and retired. The [earlier safety snapshot](../evidence/host/windows-safety-check.json) is dated 21 October and is not a fresh or binary pre/post comparison. The current workflow performs Windows setup inside lab VMs; it does not run host boot repair, mount guest VHDX files on the host or repartition host drives.
 
