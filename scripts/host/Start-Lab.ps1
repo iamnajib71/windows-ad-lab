@@ -3,7 +3,7 @@
 param([ValidateSet('DC01','CLIENT01')][string[]]$VMName=@('DC01','CLIENT01'),[switch]$BootSetup)
 $ErrorActionPreference='Stop'
 $free=(Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory * 1KB
-$pending=@(Get-VM -Name $VMName | Where-Object State -eq 'Off')
+$pending=@(Get-VM -Name $VMName | Where-Object State -in @('Off','Saved'))
 $startup=($pending | Measure-Object MemoryStartup -Sum).Sum
 $required=2GB+$startup
 if ($free -lt $required) { throw "Need $([math]::Ceiling($required/1GB)) GiB free RAM for the requested stopped VMs plus host headroom." }

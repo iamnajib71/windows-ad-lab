@@ -13,7 +13,7 @@ $plan=@()
 $bytes=0L
 foreach ($name in $VMName) {
     $vm=Get-VM -Name $name
-    if ($vm.State -ne 'Off') { throw "Shut down $name normally before moving its storage." }
+    if ($vm.State -notin @('Off','Saved')) { throw "Shut down or save $name before moving its storage." }
     $expectedSource=(Join-Path $SourceRoot $name)+'\'
     $destination=Join-Path $DestinationRoot $name
     if (Test-Path -LiteralPath $destination) { throw "Destination already exists: $destination. Inspect any previous move; no overwrite is allowed." }
