@@ -1,27 +1,37 @@
 # Windows Active Directory Support Lab
 
-A Windows Server 2022 and Windows 11 evaluation lab with automated Active Directory administration, Group Policy, file services and support troubleshooting.
-
-## Project overview
-
-| Area | What to look for |
-| --- | --- |
-| **Problem addressed** | Repeated account administration and desktop access faults need consistent procedures, scoped permissions and observable results. |
-| **Implemented work** | Built a real Microsoft AD DS forest with DNS/DHCP, department OUs and groups, CSV identity workflows, file shares, eight GPOs, a domain-joined client, object recovery and a System State backup. Moved VM storage to a data SSD after diagnosing guest I/O delays. |
-| **Skills demonstrated** | Windows Server, Active Directory, PowerShell, Group Policy, DNS, DHCP, AGDLP, NTFS/share permissions, backup and systematic troubleshooting. |
-| **Demo** | [59.6-second recording](evidence/client/demo.gif): a fictional account appears in AD, followed by a real client policy refresh, drives, desktop restriction and printer. |
-| **How to use it** | Follow the [build guide](docs/build-guide.md), then the [identity workflow](#identity-workflow) and [operations guide](docs/operations.md). Preview changes with `-WhatIf`; verify outcomes inside the guests. |
-| **Verification** | [10 live server checks](evidence/server/server-with-client-acceptance.json), [6 standard-user client checks](evidence/client/client-staff-acceptance.json), and [27 offline tests with zero analysis findings](evidence/local-validation.json) passed. Five faults were reproduced and repaired. |
-
-**Completed on 22 October 2026:** DC01 manages the domain-joined CLIENT01 through Group Policy. Real evidence covers fictional identity workflows, department permissions, client RSAT, five repaired faults, object restore and System State backup. Both VMs use the E: SSD; the repository, ISOs and evidence remain on H:. Offline mocked tests are reported separately from live guest acceptance checks.
+I built a Windows office lab where staff accounts, shared drives and desktop policies are managed centrally, and documented how I diagnosed and repaired common support faults.
 
 ![Actual onboarding and client policy demonstration](evidence/client/demo.gif)
 
-The recording queries the newly created `demo.onboard` account on CLIENT01; policy refresh runs as the existing standard user `CORP\alex.morgan`. No credential entry is recorded. [Transcript and provenance](evidence/client/README.md#demo).
+[PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) · [MIT licence](LICENSE)
 
-**Learn it yourself:** the [build and learning walkthrough](docs/learning-walkthrough.md) explains what was done, why each step matters, commands to repeat, the problems encountered, and how to start, stop and revisit the lab.
+## At a glance
 
-[PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) runs static analysis and the offline tests. [Current deployment state](docs/current-state.md) records the final checks and remaining limitations.
+| Area | Evidence-backed summary |
+| --- | --- |
+| **The problem** | In this simulated office, new starters depend on an administrator to create accounts and grant folder access; locked accounts and incorrect drive mappings interrupt staff work and consume support time. |
+| **What I built** | I configured a Microsoft domain, automated fictional staff onboarding and leavers, applied desktop policies and group-based permissions (AGDLP), and verified access as a standard user. |
+| **Results** | [27 offline tests with zero analysis findings](evidence/local-validation.json), [10 live server checks](evidence/server/server-with-client-acceptance.json) and [6 standard-user checks](evidence/client/client-staff-acceptance.json) passed. [Five deliberately reproduced faults were repaired](docs/current-state.md). |
+| **Skills shown** | Active Directory, Windows Server, Group Policy, PowerShell, DNS, DHCP, NTFS permissions, RSAT, backup and troubleshooting. |
+| **Relevant roles** | Service Desk Analyst, Desktop Support, Junior Systems Administrator. |
+| **How it was built** | Designed, specified and reviewed by me; built with Codex as my coding agent (vibe coding). Verification and its limits are linked below. |
+| **Try it / evidence** | [Demo and provenance](evidence/client/README.md#demo) · [Build guide](docs/build-guide.md) · [Learning walkthrough](docs/learning-walkthrough.md) · [Evidence register](evidence/README.md) |
+
+## What I did, step by step
+
+1. Planned an isolated office network so lab DHCP would not affect the home network; recorded the [topology and build order](docs/learning-walkthrough.md#2-build-order-and-why-it-matters).
+2. Installed the server and client, then configured the directory, DNS and DHCP before joining the client to the domain.
+3. Created departments, security groups and shared folders before using the [identity workflow](#identity-workflow) to onboard fictional staff.
+4. Applied Group Policy for drives, desktop restrictions and the lab printer, then checked the result as a standard user.
+5. Reproduced and repaired the [support tickets](#five-support-tickets), checking the observed behaviour before and after each repair.
+6. Restored a deleted directory object, completed a System State backup and recorded [acceptance evidence](docs/current-state.md); kept mocked tests separate from live checks.
+
+## Problems I hit and how I solved them
+
+- **Guest disk operations stalled:** moved the VM storage to an SSD and verified the relocation. [Build delays and storage evidence](docs/learning-walkthrough.md#11-lessons-from-the-builds-delays).
+- **RSAT installation failed through a PowerShell servicing call:** retried inside the client using a SYSTEM task, then checked installed capabilities and opened the actual consoles. [Recorded issue](docs/learning-walkthrough.md#11-lessons-from-the-builds-delays).
+- **A path-existence check did not prove access:** changed the acceptance check to enumerate the folder and stop on errors, then verified both allowed and denied access. [Permission checks](docs/learning-walkthrough.md#8-test-permissions-by-doing-the-operation).
 
 ## Architecture
 
@@ -128,3 +138,7 @@ Invoke-ScriptAnalyzer -Path .\src -Recurse -Settings .\PSScriptAnalyzerSettings.
 - Committed results and the GIF come from the actual guests. Ticket 01/04 screenshots and the readable ticket-05 summary are clearly labelled reviews of recorded before/after output, not live sign-in error screens. The [evidence register](evidence/README.md) explains provenance and historical installation records.
 
 MIT licence. Commit identity: Nazmul Hassan.
+
+## Built by Nazmul Hassan
+
+[LinkedIn](https://www.linkedin.com/in/iamnajib71) · [GitHub](https://github.com/iamnajib71)

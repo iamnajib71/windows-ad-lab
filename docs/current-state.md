@@ -1,5 +1,7 @@
 # Deployment state — 22 October 2026
 
+**Completed on 22 October 2026:** DC01 manages the domain-joined CLIENT01 through Group Policy. Real evidence covers fictional identity workflows, department permissions, client RSAT, five repaired faults, object restore and System State backup. Both VMs use the E: SSD; the repository, ISOs and evidence remain on H:. Offline mocked tests are reported separately from live guest acceptance checks.
+
 The two-machine lab is deployed; all five support exercises are repaired. Timestamps use Australia/Sydney (UTC+11). The [learning walkthrough](learning-walkthrough.md) explains the implementation, decisions, failures and repeatable commands.
 
 | Component | Actual result |
