@@ -8,6 +8,9 @@ if ($PSCmdlet.ShouldProcess('CLIENT01','Set DNS and join corp.lab / Computers OU
     $adapter=Get-NetAdapter | Where-Object Status -eq Up
     if (@($adapter).Count -ne 1) { throw 'Use one adapter on the lab switch.' }
     Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses '192.168.77.10'
+    # A client installed while DC01 was off may still have an APIPA address.
+    & ipconfig.exe /renew $adapter.Name
+    if ($LASTEXITCODE -ne 0) { throw 'Renew the lab DHCP lease before joining the domain.' }
     $null=Resolve-DnsName '_ldap._tcp.dc._msdcs.corp.lab' -Type SRV -Server '192.168.77.10'
     Add-Computer -DomainName 'corp.lab' -OUPath 'OU=Computers,OU=Lab,DC=corp,DC=lab' -Credential $DomainCredential -Restart
 }

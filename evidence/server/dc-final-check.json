@@ -1,0 +1,67 @@
+{
+    "CapturedAt":  "2026-10-22T12:42:49.6324582+11:00",
+    "Users":  [
+                  {
+                      "SamAccountName":  "jamie.chen",
+                      "Enabled":  true,
+                      "DistinguishedName":  "CN=Jamie Chen,OU=HR,OU=Staff,DC=corp,DC=lab",
+                      "Department":  "HR",
+                      "HomeDirectory":  "\\\\DC01\\Homes\\jamie.chen",
+                      "mail":  "jamie.chen@corp.example.invalid",
+                      "pwdLastSet":  0,
+                      "MemberOf":  [
+                                       "CN=GG_HR,OU=HR,OU=Groups,DC=corp,DC=lab"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "alex.morgan",
+                      "Enabled":  true,
+                      "DistinguishedName":  "CN=Alex Morgan,OU=Finance,OU=Staff,DC=corp,DC=lab",
+                      "Department":  "Finance",
+                      "HomeDirectory":  "\\\\DC01\\Homes\\alex.morgan",
+                      "mail":  "alex.morgan@corp.example.invalid",
+                      "pwdLastSet":  0,
+                      "MemberOf":  [
+                                       "CN=GG_Finance,OU=Finance,OU=Groups,DC=corp,DC=lab"
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "leaver.demo",
+                      "Enabled":  false,
+                      "DistinguishedName":  "CN=Leaver Demo,OU=Disabled,DC=corp,DC=lab",
+                      "Department":  "IT",
+                      "HomeDirectory":  "\\\\DC01\\Homes\\leaver.demo",
+                      "mail":  "leaver.demo@corp.example.invalid",
+                      "pwdLastSet":  134370628454163953,
+                      "MemberOf":  [
+
+                                   ]
+                  },
+                  {
+                      "SamAccountName":  "casey.taylor",
+                      "Enabled":  true,
+                      "DistinguishedName":  "CN=Casey Taylor,OU=IT,OU=Staff,DC=corp,DC=lab",
+                      "Department":  "IT",
+                      "HomeDirectory":  "\\\\DC01\\Homes\\casey.taylor",
+                      "mail":  "casey.taylor@corp.example.invalid",
+                      "pwdLastSet":  0,
+                      "MemberOf":  [
+                                       "CN=GG_IT,OU=IT,OU=Groups,DC=corp,DC=lab"
+                                   ]
+                  }
+              ],
+    "Printer":  {
+                    "Name":  "LAB-Printer",
+                    "DriverName":  "Generic / Text Only",
+                    "PortName":  "NUL:",
+                    "Shared":  true,
+                    "ShareName":  "LAB-Printer"
+                },
+    "BackupVolume":  {
+                         "DriveLetter":  "E",
+                         "FileSystemLabel":  "LAB-Backup",
+                         "FileSystem":  "NTFS",
+                         "Size":  42931843072,
+                         "SizeRemaining":  42843283456
+                     }
+}

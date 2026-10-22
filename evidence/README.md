@@ -14,7 +14,7 @@ Only actual machine results belong here. Every item below is **pending** unless 
 | Policy | [GPO inventory](server/dc-live-state.json) and [shared virtual printer installation](server/printer-install-transcript.txt) | Created and links checked on DC01; client `gpresult`, effective registry, drives and printer connection pending |
 | RSAT | ADUC, GPMC and DNS consoles running on CLIENT01 | Pending |
 | Tickets 01-05 | Before/diagnose/after evidence with commands and observed outcomes | Pending |
-| Recovery | [Recycle Bin restore with the same GUID](server/recycle-restore.json) | Object restore verified 22 October 2026; System State backup catalogue pending |
+| Recovery | [Recycle Bin restore with the same GUID](server/recycle-restore.json) and [successful System State backup/catalogue](server/system-state-backup-transcript.txt) | Verified 22 October 2026; no System State restore claimed |
 | Demo | 30-90 second GIF of real onboarding and client policy application | Pending |
 
 Store raw recordings, credentials and unreviewed transcripts in ignored `.lab` or `evidence/private`. Use only fictional lab sessions. Inspect screens for host account names, email, notifications, secrets and unrelated applications before committing. Redact private values if necessary and describe the redaction; do not alter observed outcomes. Include timestamp/timezone and SHA256 hashes for reviewed evidence. Host inventory can expose unrelated VM names: publish only this lab's selected records.

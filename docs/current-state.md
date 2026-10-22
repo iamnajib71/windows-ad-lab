@@ -8,13 +8,14 @@ Verified on the actual lab:
 - Three fictional CSV staff accounts were created, a password reset required change at next sign-in, and a separate leaver was disabled, stripped of direct groups and moved to Disabled. The private home ACL was inspected. [Actual results](../evidence/server/identity-and-recovery-transcript.txt).
 - The disposable `recycle.demo` object was deleted and restored with the same GUID and original OU, remaining disabled. [Restore result](../evidence/server/recycle-restore.json).
 - All eight LAB GPOs were created and linked. The shared `LAB-Printer` queue uses the signed Microsoft Generic/Text driver extracted from image 2 of the official Server evaluation ISO. PnPUtil accepted its catalog inside DC01.
-- The dedicated 40 GiB dynamic backup VHDX was initialised inside DC01 as E:, labelled `LAB-Backup`. This is preparation, not proof of a successful backup.
+- A real System State backup to the dedicated E: virtual disk completed successfully. The catalogue lists version `10/22/2026-01:43` and includes System State recovery. [Actual wbadmin output](../evidence/server/system-state-backup-transcript.txt). This does not demonstrate a System State restore.
+- All three fictional staff accounts were rechecked with `pwdLastSet=0`. [Actual selected guest inventory](../evidence/server/dc-final-check.json).
 - A read-only observer captures lab VM consoles and memory status privately on H:. Console screenshot publication remains pending a fresh visible guest screen.
 
 Outstanding:
 
-- CLIENT01 remains off and uninstalled. The latest readings were around 4.2 GiB free RAM; safe startup requires 6 GiB free while DC01 is running. The 2 GiB host headroom check remains enabled.
-- The System State backup helper has been prepared/requested. A successful `wbadmin` catalogue must be recorded before it is marked complete.
+- Windows 11 Setup is running inside CLIENT01. DC01 was gracefully shut down after the verified backup to make room for installation. The last host reading during setup was about 4.3 GiB free. [Actual setup screenshot](../evidence/client/README.md).
+- VM RAM is capped at 2 GiB for DC01 and 4 GiB for CLIENT01. The 2 GiB host startup headroom check remains enabled. Domain configuration waits for installation and sufficient memory before starting both guests.
 - Client domain join, DHCP lease, applied GPOs/`gpresult`, RSAT screenshots, five executed ticket evidence sets and the 30–90 second demo GIF are pending. No v1.0.0 release has been published.
 - Evaluation activation/expiry and current servicing levels still require collection from each guest.
 

@@ -14,6 +14,10 @@ The executed identity commands were `New-LabUser.ps1` with `data/onboarding.csv`
 
 The object-recovery commands match [the recovery runbook](../../docs/recovery.md). The restored object was disabled before deletion and remains disabled. No full System State restore is claimed.
 
-CLIENT01 domain membership, user/computer `gpresult`, applied drive/printer preferences, RSAT GUI use, ticket screenshots, positive/negative client share access, System State backup and the demo remain pending.
+- `dc-final-check.json`: actual staff must-change flags (`pwdLastSet=0`), disabled leaver state, shared printer and dedicated backup volume inventory collected before backup.
+- `system-state-backup.json`: guest completion timestamp and target.
+- `system-state-backup-transcript.txt`: unchanged native `wbadmin` output from the host PowerShell Direct transcript, excluding the unrelated host header and startup connection retry. It includes successful completion and catalogue version `10/22/2026-01:43`, with System State among the recoverable items. Native command output was not captured in the guest transcript, so the host-captured output is supplied here. Times are retained exactly as each command reported them.
+
+CLIENT01 domain membership, user/computer `gpresult`, applied drive/printer preferences, RSAT GUI use, ticket screenshots, positive/negative client share access and the demo remain pending.
 
 `sha256.csv` hashes the published Git blob bytes of the machine-generated JSON and transcript files. Git may convert line endings in a Windows checkout; use the raw published files or `git show` bytes when verifying these hashes. This explanatory README is excluded from the manifest.

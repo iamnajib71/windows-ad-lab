@@ -1,6 +1,6 @@
 # Backup and recovery runbook
 
-Status: a real Recycle Bin restore was verified on 22 October 2026, retaining the same object GUID before deletion and after restore. See [the machine-generated result](../evidence/server/recycle-restore.json) and [actual transcript excerpt](../evidence/server/identity-and-recovery-transcript.txt). System State backup remains pending until a successful catalogue is recorded.
+Status: a real Recycle Bin restore and System State backup were verified on 22 October 2026. The restored object retained its GUID; see [the machine-generated result](../evidence/server/recycle-restore.json) and [actual transcript excerpt](../evidence/server/identity-and-recovery-transcript.txt). The [actual wbadmin output](../evidence/server/system-state-backup-transcript.txt) records a successful System State backup and catalogue version `10/22/2026-01:43`. A System State restore has not been performed.
 
 `Initialize-LabDomain.ps1` enables AD Recycle Bin after forest creation. It is a forest-wide, irreversible feature enablement, suitable here because this is a new isolated evaluation forest. It does not restore objects deleted before enablement.
 

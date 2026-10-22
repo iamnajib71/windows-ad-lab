@@ -27,7 +27,7 @@ if ($PSCmdlet.ShouldProcess($LabRoot,'Create isolated lab switch, NAT and powere
     if (-not (Get-NetNat -Name 'WindowsADLab-NAT' -ErrorAction SilentlyContinue)) {
         $null=New-NetNat -Name 'WindowsADLab-NAT' -InternalIPInterfaceAddressPrefix '192.168.77.0/24'
     }
-    foreach ($spec in @(@{Name='DC01';Memory=2GB;Max=4GB;Disk=60GB;Iso=$ServerIso},@{Name='CLIENT01';Memory=4GB;Max=6GB;Disk=80GB;Iso=$ClientIso})) {
+    foreach ($spec in @(@{Name='DC01';Memory=2GB;Max=2GB;Disk=60GB;Iso=$ServerIso},@{Name='CLIENT01';Memory=4GB;Max=4GB;Disk=80GB;Iso=$ClientIso})) {
         $vmPath=Join-Path $LabRoot $spec.Name
         if (Get-VM -Name $spec.Name -ErrorAction SilentlyContinue) { throw "VM $($spec.Name) already exists. Review it; no overwrite is allowed." }
         $null=New-Item -ItemType Directory -Path $vmPath -Force
