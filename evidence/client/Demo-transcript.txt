@@ -1,0 +1,66 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261022191030
+Username: CORP\alex.morgan
+RunAs User: CORP\alex.morgan
+Configuration Name: 
+Machine: CLIENT01 (Microsoft Windows NT 10.0.26300.0)
+Host Application: powershell.exe -NoProfile -NoExit -WindowStyle Maximized -ExecutionPolicy Bypass -File C:\LabTasks\demo-watch.ps1
+Process ID: 4196
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\alex.morgan\Documents\LabEvidence\Demo-transcript.txt
+WINDOWS ACTIVE DIRECTORY LAB | Live onboarding and policy refresh
+DC01 creates a fictional account; CLIENT01 queries the actual directory.
+Policy refresh runs as the existing standard user CORP\alex.morgan.
+Before onboarding: matching accounts = 0
+Waiting for Invoke-LabOnboarding on DC01 ...
+
+
+SamAccountName : demo.onboard
+Enabled        : True
+Department     : Finance
+HomeDirectory  : \\DC01\Homes\demo.onboard
+mail           : demo.onboard@corp.example.invalid
+pwdLastSet     : 0
+
+
+
+
+Name
+----
+Domain Users
+GG_Finance
+
+
+Refreshing Group Policy for CORP\alex.morgan ...
+Updating policy...
+
+User Policy update has completed successfully.
+Actual applied policy results:
+
+LocalPath RemotePath               Status
+--------- ----------               ------
+H:        \\DC01\Homes\alex.morgan     OK
+F:        \\DC01\Finance               OK
+
+
+Desktop restriction NoControlPanel = 1
+
+Name
+----
+\\DC01\LAB-Printer
+
+
+Completed: account created on DC01; client policy refreshed and verified.
+**********************
+Windows PowerShell transcript end
+End time: 20261022191047
+**********************

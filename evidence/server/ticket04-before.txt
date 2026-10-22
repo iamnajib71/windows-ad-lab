@@ -1,0 +1,12 @@
+Transcript started, output file is C:\LabEvidence\Ticket04-fault-server.txt
+
+
+Name              : CLIENT01
+DistinguishedName : CN=CLIENT01,OU=Computers,OU=Lab,DC=corp,DC=lab
+PasswordLastSet   : 22/10/2026 7:04:03 PM
+PSComputerName    : DC01
+RunspaceId        : ebdb762b-671d-4bbf-9e3a-bd6d80235825
+
+Transcript stopped, output file is C:\LabEvidence\Ticket04-fault-server.txt
+
+

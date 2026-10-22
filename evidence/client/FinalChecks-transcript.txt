@@ -1,0 +1,145 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261022191119
+Username: CORP\alex.morgan
+RunAs User: CORP\alex.morgan
+Configuration Name: 
+Machine: CLIENT01 (Microsoft Windows NT 10.0.26300.0)
+Host Application: powershell.exe -NoProfile -NoExit -WindowStyle Maximized -ExecutionPolicy Bypass -File C:\LabRepo\scripts\client\Invoke-LabStaffEvidence.ps1 -Step FinalChecks
+Process ID: 9752
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\alex.morgan\Documents\LabEvidence\FinalChecks-transcript.txt
+Actual staff session: FinalChecks / 2026-10-22T19:11:19.8394529+11:00
+corp\alex.morgan
+PS> gpupdate /target:user /force
+Updating policy...
+
+User Policy update has completed successfully.
+PS> gpresult /scope user /r
+
+Microsoft (R) Windows (R) Operating System Group Policy Result tool v2.0
+c Microsoft Corporation. All rights reserved.
+
+Created on ?22/?10/?2026 at 7:11:26 PM
+
+
+
+RSOP data for CORP\alex.morgan on CLIENT01 : Logging Mode
+----------------------------------------------------------
+
+OS Configuration:            Member Workstation
+OS Version:                  10.0.26300
+Site Name:                   N/A
+Roaming Profile:             N/A
+Local Profile:               C:\Users\alex.morgan
+Connected over a slow link?: No
+
+
+USER SETTINGS
+--------------
+    CN=Alex Morgan,OU=Finance,OU=Staff,DC=corp,DC=lab
+    Last time Group Policy was applied: 22/10/2026 at 7:11:19 PM
+    Group Policy was applied from:      DC01.corp.lab
+    Group Policy slow link threshold:   500 kbps
+    Domain Name:                        CORP
+    Domain Type:                        Windows 2008 or later
+
+    Applied Group Policy Objects
+    -----------------------------
+        LAB-Desktop-Restrictions
+        LAB-Drive-Finance
+        LAB-Drive-HR
+        LAB-Drive-IT
+        LAB-Printer-Deployment
+
+    The following GPOs were not applied because they were filtered out
+    -------------------------------------------------------------------
+        Local Group Policy
+            Filtering:  Not Applied (Empty)
+
+    The user is a part of the following security groups
+    ---------------------------------------------------
+        Domain Users
+        Everyone
+        BUILTIN\Users
+        NT AUTHORITY\INTERACTIVE
+        CONSOLE LOGON
+        NT AUTHORITY\Authenticated Users
+        This Organization
+        LOCAL
+        GG_Finance
+        Authentication authority asserted identity
+        DL_Finance_Modify
+        Medium Mandatory Level
+
+
+PS>TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Could not find a part of the path '\\DC01\Homes\jamie.chen'."
+PS> Get-SmbMapping
+
+LocalPath RemotePath               Status
+--------- ----------               ------
+H:        \\DC01\Homes\alex.morgan     OK
+F:        \\DC01\Finance               OK
+
+
+Observed access and desktop policy:
+
+
+Computer         : CLIENT01
+User             : CORP\alex.morgan
+Step             : FinalChecks
+GPUpdateExitCode : 0
+NoControlPanel   : 1
+FinanceAccess    : True
+FinanceError     :
+OwnHomeAccess    : True
+HRAccess         : False
+OtherHomeAccess  : False
+WrittenFile      :
+ReadBack         :
+
+
+
+[95mPester v5.7.1[0m
+[95m
+[95mStarting discovery in 1 files.[0m
+[95mDiscovery found 6 tests in 330ms.[0m
+[95mRunning tests.[0m
+[95m
+[95mRunning tests from 'C:\LabRepo\acceptance\Client.Acceptance.Tests.ps1'[0m
+[92mDescribing Real fictional staff client experience[0m
+[32m  [+] is a corp.lab domain member[0m
+[90m 268ms (207ms|61ms)[0m
+[32m  [+] has the effective desktop restriction[0m
+[90m 89ms (87ms|2ms)[0m
+[32m  [+] requires SMB client signing and disables LLMNR[0m
+[90m 1.76s (1.76s|2ms)[0m
+[32m  [+] maps Finance to F:[0m
+[90m 40ms (39ms|1ms)[0m
+PS>TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Access is denied"
+>> TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Access is denied"
+PS>TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Could not find a part of the path '\\DC01\Homes\jamie.chen'."
+>> TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Could not find a part of the path '\\DC01\Homes\jamie.chen'."
+[32m  [+] permits Finance and own home access while denying HR and another home[0m
+[90m 72ms (71ms|1ms)[0m
+[32m  [+] has the deployed shared virtual printer[0m
+[90m 29ms (27ms|1ms)[0m
+[97mTests completed in 3.5s[0m
+[32mTests Passed: 6, [0m
+[90mFailed: 0, [0m
+[90mSkipped: 0, [0m
+[90mInconclusive: 0, [0m
+[37m[0m
+[90mNotRun: 0[0m
+**********************
+Windows PowerShell transcript end
+End time: 20261022191135
+**********************

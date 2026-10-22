@@ -1,0 +1,8 @@
+{
+    "CapturedAt":  "2026-10-22T18:34:52.3436666+11:00",
+    "Computer":  "CLIENT01",
+    "User":  "CORP\\alex.morgan",
+    "AutoAdminLogon":  "0",
+    "LSASecretRemoved":  true,
+    "PlaintextPasswordPresent":  false
+}

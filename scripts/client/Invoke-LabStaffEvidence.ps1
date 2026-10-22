@@ -49,8 +49,12 @@ try {
     if ($Step -in @('Ticket02After','Ticket05After')) {
         $writtenFile="\\DC01\Finance\lab-$($Step.ToLowerInvariant())-alex.txt"
         "Fictional lab access verification: $((Get-Date).ToString('o'))" | Set-Content -LiteralPath $writtenFile
-        $readBack=Get-Content -LiteralPath $writtenFile
+        $readBack=[IO.File]::ReadAllText($writtenFile).TrimEnd()
     }
+    $otherHomeAccess=$true
+    $otherHomeError=$null
+    try { $null=Get-ChildItem -LiteralPath '\\DC01\Homes\jamie.chen' -ErrorAction Stop }
+    catch { $otherHomeAccess=$false; $otherHomeError=$_.Exception.Message }
     $summary=[ordered]@{
         CapturedAt=(Get-Date).ToString('o');Computer=$env:COMPUTERNAME
         User=[Security.Principal.WindowsIdentity]::GetCurrent().Name;Step=$Step
@@ -60,7 +64,7 @@ try {
         FinanceAccess=$financeAccess;FinanceError=$financeError
         OwnHomeAccess=(Test-Path '\\DC01\Homes\alex.morgan' -ErrorAction SilentlyContinue)
         HRAccess=(Test-Path '\\DC01\HR' -ErrorAction SilentlyContinue)
-        OtherHomeAccess=(Test-Path '\\DC01\Homes\jamie.chen' -ErrorAction SilentlyContinue)
+        OtherHomeAccess=$otherHomeAccess;OtherHomeError=$otherHomeError
         WrittenFile=$writtenFile;ReadBack=$readBack
     }
     $summary | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $OutputDirectory "$Step-state.json")

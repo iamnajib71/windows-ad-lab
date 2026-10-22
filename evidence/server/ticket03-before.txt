@@ -1,0 +1,12 @@
+Transcript started, output file is C:\LabEvidence\Ticket03-before-server.txt
+
+
+DisplayName    : LAB-Desktop-Restrictions
+Enabled        : False
+Target         : ou=staff,dc=corp,dc=lab
+PSComputerName : DC01
+RunspaceId     : 21feac95-ac87-4a58-854b-e47bfa3bc18e
+
+Transcript stopped, output file is C:\LabEvidence\Ticket03-before-server.txt
+
+

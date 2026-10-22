@@ -24,7 +24,7 @@ Capture the same GUID before deletion, while deleted, and after restore. Compare
 
 System State backup:
 
-1. `Add-LabBackupDisk.ps1` attaches a new dynamic 40 GiB VHDX on host H:.
+1. `Add-LabBackupDisk.ps1` attaches a new dynamic 40 GiB lab VHDX. It was originally on host H: and moved with DC01 storage to host E: SSD; the backup volume inside DC01 is also called E:.
 2. Inside DC01, inspect `Get-Disk`. `Initialize-LabBackupDisk.ps1` only formats exactly one RAW, non-system, non-boot 40 GiB disk, and stops if the selected drive letter is already used. Never initialise an existing/data/host disk. Default is E:.
 3. Start the real backup and preserve the success/failure result and catalogue:
 
@@ -38,6 +38,6 @@ Get-WinEvent -LogName 'Microsoft-Windows-Backup' -MaxEvents 10 |
     Select-Object TimeCreated,Id,LevelDisplayName,Message
 ```
 
-Windows Server Backup is installed by the forest setup and checked by the backup script. The script rejects C:, checks the target exists, checks `wbadmin` exit codes and lists the backup catalogue. A directory called WindowsImageBackup alone is not success evidence. Allow sufficient free H: and guest backup space before running.
+Windows Server Backup is installed by the forest setup and checked by the backup script. The script rejects C:, checks the target exists, checks `wbadmin` exit codes and lists the backup catalogue. A directory called WindowsImageBackup alone is not success evidence. Allow sufficient free space on the current host VM volume and guest backup volume before running.
 
-The `wbadmin start systemstatebackup` command follows [Microsoft's reference](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wbadmin-start-systemstatebackup). A real System State restore would require a separate recovery test, DSRM credentials, a documented authoritative/non-authoritative decision and verification. This project does not automate or claim that destructive recovery. Hyper-V checkpoints are not a replacement for backup, and this same-physical-disk backup cannot survive H: failure.
+The `wbadmin start systemstatebackup` command follows [Microsoft's reference](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wbadmin-start-systemstatebackup). A real System State restore would require a separate recovery test, DSRM credentials, a documented authoritative/non-authoritative decision and verification. This project does not automate or claim that destructive recovery. Hyper-V checkpoints are not a replacement for backup; the backup now shares the guests' physical E: SSD and cannot survive its failure.

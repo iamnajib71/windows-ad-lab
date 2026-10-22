@@ -1,51 +1,48 @@
-# Ticket 03 - Desktop GPO not applying
+# Ticket 03 — Desktop restriction GPO not applying
 
-Status: **pending live execution**. Intended acceptance: restore the scoped policy and verify the effective restriction in the staff session.
+**Resolved, 22 October 2026.** The Staff OU's LAB-Desktop-Restrictions link was deliberately disabled at 18:49. After refresh Alex could open Control Panel and NoControlPanel was absent. Re-enabling the link at 18:51 restored the restriction after refresh.
 
 ## Reproduce
 
-From a lab admin session, temporarily disable only the Staff link for the desktop restriction:
+On DC01 in this disposable lab only:
 
 ```powershell
 Set-GPLink -Name LAB-Desktop-Restrictions -Target 'OU=Staff,DC=corp,DC=lab' -LinkEnabled No
 ```
 
-In Alex's CLIENT01 session run `gpupdate /target:user /force`, then sign out/in if needed. Record whether Control Panel/Settings becomes available and whether `NoControlPanel` is removed. Do not assume a previous setting has been cleared without checking.
+On CLIENT01 as Alex: `gpupdate /target:user /force`, then try Control Panel. [Server fault output](../../evidence/server/ticket03-before.txt).
 
 ## Diagnose
 
 ```powershell
-# Alex's user session on CLIENT01:
-gpresult /r
-gpresult /scope user /v
-gpresult /h C:\LabEvidence\ticket03-before.html /f
-Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoControlPanel -ErrorAction SilentlyContinue
-Resolve-DnsName _ldap._tcp.dc._msdcs.corp.lab -Type SRV
+# CLIENT01, Alex
+gpresult /scope user /r
+Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer' -Name NoControlPanel -ErrorAction SilentlyContinue
+# DC01
+Get-ADUser alex.morgan | Select-Object DistinguishedName
+(Get-GPInheritance -Target 'OU=Staff,DC=corp,DC=lab').GpoLinks |
+    Select-Object DisplayName,Enabled,Target
 ```
 
-From lab admin RSAT, verify Alex's distinguished name is under Staff, inspect `Get-GPInheritance -Target 'OU=Staff,DC=corp,DC=lab'`, the link enabled state, security filtering, delegation Read permissions, WMI filters and GroupPolicy Operational log. Explain which finding proves the cause. A policy absent from scope differs from a policy denied by filtering or a preference extension failure.
+[Before gpresult](../../evidence/client/Ticket03Before-gpresult.txt) and [state](../../evidence/client/Ticket03Before-state.json) show the missing desktop restriction. Check OU placement and link state before changing registry values locally. Other working policies help narrow the fault.
+
+![Actual unrestricted Control Panel during the fault](../../evidence/client/ticket03-before.png)
 
 ## Fix and verify
 
 ```powershell
-# Lab admin:
+# DC01
 Set-GPLink -Name LAB-Desktop-Restrictions -Target 'OU=Staff,DC=corp,DC=lab' -LinkEnabled Yes
-# Alex's CLIENT01 session:
+# CLIENT01, Alex
 gpupdate /target:user /force
-gpresult /r
-gpresult /h C:\LabEvidence\ticket03-after.html /f
-Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoControlPanel
+gpresult /scope user /r
+Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer' -Name NoControlPanel
 ```
 
-Show the policy in Applied GPOs, the effective value of 1, and the actual restriction when opening Control Panel. For computer policies use a separate elevated `/scope computer` report. Save actual `gpupdate` output including any warnings.
+[Server repair](../../evidence/server/ticket03-after.txt); [after state](../../evidence/client/Ticket03After-state.json); [after gpresult](../../evidence/client/Ticket03After-gpresult.txt). NoControlPanel=1 and the Restrictions dialog demonstrate effective behavior, beyond the GPO merely existing.
+
+![Actual policy restriction after repair](../../evidence/client/ticket03-after.png)
 
 ## Prevent
 
-Check enabled links and intended OU scope as part of a change review. Test standard users separately from administrators. Preserve before/after reports and link configuration; do not solve a user scope problem by enabling loopback or moving policies to the domain root indiscriminately.
-
-## Evidence / observed result
-
-- Before: missing applied policy and unrestricted behaviour - pending.
-- Diagnosis: disabled Staff link in GPMC / inheritance output - pending.
-- After: applied policy, `gpupdate`, effective value and restriction - pending.
-- Actual root cause, timestamps and reports - pending.
+Review links and target OUs with every GPO edit. Capture gpresult and effective behavior from a standard-user session. Use a test OU/group for broader policy changes; avoid bypassing the management source with local registry edits.

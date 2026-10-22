@@ -1,0 +1,15 @@
+
+Deployment Image Servicing and Management tool
+Version: 10.0.26100.8972
+
+Image Version: 10.0.26300.9457
+
+Capability Identity : Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0
+Name : Rsat.ActiveDirectory.DS-LDS.Tools
+State : Installed
+Display Name : RSAT: Active Directory Domain Services and Lightweight Directory Services Tools
+Description : Active Directory Domain Services (AD DS) and Active Directory Lightweight Directory Services (AD LDS) Tools include snap-ins and command-line tools for remotely managing AD DS and AD LDS on Windows Server.
+Download Size :  0 bytes
+Install Size : 52.16 MB
+
+The operation completed successfully.

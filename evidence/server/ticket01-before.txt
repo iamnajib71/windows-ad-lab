@@ -1,0 +1,67 @@
+Transcript started, output file is C:\LabEvidence\Ticket01Before-server.txt
+
+
+LockoutThreshold         : 5
+LockoutDuration          : 00:15:00
+LockoutObservationWindow : 00:15:00
+PSComputerName           : DC01
+RunspaceId               : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+Attempt        : 1
+Authenticated  : False
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+Attempt        : 2
+Authenticated  : False
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+Attempt        : 3
+Authenticated  : False
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+Attempt        : 4
+Authenticated  : False
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+Attempt        : 5
+Authenticated  : False
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+SamAccountName : alex.morgan
+LockedOut      : True
+badPwdCount    : 5
+lockoutTime    : 134371269514165337
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+CorrectPasswordWhileLockedAuthenticated : False
+PSComputerName                          : DC01
+RunspaceId                              : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+TimeCreated    : 22/10/2026 6:15:51 PM
+Id             : 4740
+Message        : A user account was locked out.
+                 
+                 Subject:
+                 	Security ID:		S-1-5-18
+                 	Account Name:		DC01$
+                 	Account Domain:		CORP
+                 	Logon ID:		0x3E7
+                 
+                 Account That Was Locked Out:
+                 	Security ID:		S-1-5-21-2160013254-53532406-1998007980-1111
+                 	Account Name:		alex.morgan
+                 
+                 Additional Information:
+                 	Caller Computer Name:	DC01
+PSComputerName : DC01
+RunspaceId     : 1593f282-18b2-4b99-bf0c-bc8666568f3b
+
+Transcript stopped, output file is C:\LabEvidence\Ticket01Before-server.txt
+
+

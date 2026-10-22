@@ -1,0 +1,38 @@
+{
+    "CapturedAt":  "2026-10-22T18:54:35.4427155+11:00",
+    "Computer":  "CLIENT01",
+    "User":  "CORP\\alex.morgan",
+    "Step":  "Ticket05Before",
+    "GPUpdateExitCode":  0,
+    "NoControlPanel":  1,
+    "DriveMappings":  [
+                          {
+                              "LocalPath":  "H:",
+                              "RemotePath":  "\\\\DC01\\Homes\\alex.morgan",
+                              "Status":  0
+                          },
+                          {
+                              "LocalPath":  "F:",
+                              "RemotePath":  "\\\\DC01\\Finance",
+                              "Status":  0
+                          }
+                      ],
+    "Printers":  [
+                     {
+                         "Name":  "Microsoft Print to PDF",
+                         "DriverName":  "Microsoft Print To PDF"
+                     },
+                     {
+                         "Name":  "\\\\DC01\\LAB-Printer",
+                         "DriverName":  "Generic / Text Only"
+                     }
+                 ],
+    "FinanceAccess":  false,
+    "FinanceError":  "Access is denied",
+    "OwnHomeAccess":  true,
+    "HRAccess":  false,
+    "OtherHomeAccess":  false,
+    "OtherHomeError":  "Could not find a part of the path \u0027\\\\DC01\\Homes\\jamie.chen\u0027.",
+    "WrittenFile":  null,
+    "ReadBack":  null
+}

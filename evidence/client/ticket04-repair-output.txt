@@ -1,0 +1,56 @@
+Transcript started, output file is C:\LabEvidence\Ticket04-repair-client.txt
+
+
+QueryType      : SRV
+Target         : dc01.corp.lab
+PSComputerName : CLIENT01
+RunspaceId     : 6ff2391c-4722-46ae-8160-5be868243d3c
+NameTarget     : dc01.corp.lab
+Priority       : 0
+Weight         : 100
+Port           : 389
+Name           : _ldap._tcp.dc._msdcs.corp.lab
+Type           : SRV
+CharacterSet   : Unicode
+Section        : Answer
+DataLength     : 16
+TTL            : 600
+
+Address        : 192.168.77.10
+IPAddress      : 192.168.77.10
+QueryType      : A
+PSComputerName : CLIENT01
+RunspaceId     : 6ff2391c-4722-46ae-8160-5be868243d3c
+IP4Address     : 192.168.77.10
+Name           : dc01.corp.lab
+Type           : A
+CharacterSet   : Unicode
+Section        : Additional
+DataLength     : 4
+TTL            : 3600
+
+DisplayHint    : DateTime
+PSComputerName : CLIENT01
+RunspaceId     : 6ff2391c-4722-46ae-8160-5be868243d3c
+Date           : 22/10/2026 12:00:00 AM
+Day            : 22
+DayOfWeek      : Thursday
+DayOfYear      : 295
+Hour           : 19
+Kind           : Local
+Millisecond    : 982
+Minute         : 8
+Month          : 10
+Second         : 34
+Ticks          : 639282929149828505
+TimeOfDay      : 19:08:34.9828505
+Year           : 2026
+DateTime       : Thursday, 22 October 2026 7:08:34 PM
+
+SecureChannelBefore : False
+PSComputerName      : CLIENT01
+RunspaceId          : 6ff2391c-4722-46ae-8160-5be868243d3c
+
+Transcript stopped, output file is C:\LabEvidence\Ticket04-repair-client.txt
+
+

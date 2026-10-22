@@ -1,52 +1,46 @@
-# Ticket 04 - Computer trust relationship failure
+# Ticket 04 — Broken computer trust
 
-Status: **pending live execution**. This fault injection is limited to the disposable CLIENT01 machine account.
+**Resolved, 22 October 2026.** A guarded directory-side reset of CLIENT01$'s machine password at 19:04 deliberately desynchronised its secret. The actual client secure-channel check returned False. Scoped repair at 19:08 returned True, followed by a True verification. No DC rollback or remove/rejoin was needed.
 
 ## Reproduce
 
-Ensure you can sign in as **CLIENT01\LabAdmin** and retain its DPAPI-protected credential before introducing the fault. On DC01, reset only the directory-side password for `CLIENT01$`, using a temporary SecureString. This deliberately desynchronises the machine password from the client; never run against another computer.
+Retain the protected CLIENT01\LabAdmin local recovery credential before changing the disposable machine account. On DC01, verify the exact managed computer DN, then reset only that machine password using a private SecureString:
 
 ```powershell
-$temporaryMachinePassword = Read-Host 'Temporary fictional machine password' -AsSecureString
+Get-ADComputer CLIENT01 | Select-Object Name,DistinguishedName
+$temporaryMachinePassword=Read-Host 'Temporary lab machine password' -AsSecureString
 Set-ADAccountPassword -Identity 'CLIENT01$' -Reset -NewPassword $temporaryMachinePassword
 ```
 
-Restart only CLIENT01. A domain sign-in or secure-channel test should now fail; capture the actual result. If the channel still works because of timing/cached state, document the observation and investigate instead of inventing a failure or rolling back the DC.
+[Actual server fault output](../../evidence/server/ticket04-before.txt). Previous machine secrets and caching can affect results: always inspect the actual channel before claiming a fault. In this run no client reboot was required to observe False.
 
 ## Diagnose
 
-Sign in locally on CLIENT01 and open an elevated guest PowerShell session:
+On CLIENT01 in an elevated **local** administrative guest session:
 
 ```powershell
 Get-CimInstance Win32_ComputerSystem | Select-Object Name,Domain,PartOfDomain
-Get-DnsClientServerAddress -AddressFamily IPv4
-Resolve-DnsName _ldap._tcp.dc._msdcs.corp.lab -Type SRV -Server 192.168.77.10
+Resolve-DnsName _ldap._tcp.dc._msdcs.corp.lab -Type SRV
 w32tm /query /status
-Test-ComputerSecureChannel -Verbose
-Get-WinEvent -FilterHashtable @{LogName='System';ProviderName='NETLOGON';StartTime=(Get-Date).AddMinutes(-30)} |
-    Select-Object TimeCreated,Id,Message
+Test-ComputerSecureChannel -Server DC01.corp.lab -Verbose
 ```
 
-Distinguish DNS/DC availability, clock skew, disabled/missing machine account and a mismatched machine secret. A ping response does not establish domain authentication. This repair command is for member clients, not a DC.
+[Before JSON](../../evidence/client/Ticket04-before-client.json) records False at 19:04:11. The [captured diagnostic output](../../evidence/client/ticket04-diagnostics-output.txt) preserves DNS/time inspection; the [guest transcript](../../evidence/client/Ticket04-before-client.txt) records the verbose broken-channel result. Time output reported the Hyper-V time provider and a not-synchronised leap indicator; this exercise does not claim a complete time-service health validation. The deliberate secret reset and successful scoped repair establish the demonstrated fault.
 
 ## Fix and verify
 
 ```powershell
-$repairCredential = Get-Credential 'CORP\Administrator'
+$repairCredential=Get-Credential 'CORP\Administrator'
 Test-ComputerSecureChannel -Repair -Server DC01.corp.lab -Credential $repairCredential -Verbose
 Test-ComputerSecureChannel -Verbose
-gpupdate /force
 ```
 
-Restart CLIENT01 if required and sign in as the fictional domain user. Confirm `Test-ComputerSecureChannel=True`, successful domain logon and policy processing. Do not remove/rejoin the computer as the first response when a scoped secure-channel repair suffices. Keep the local recovery account available.
+[Repair JSON](../../evidence/client/Ticket04-secure-channel.json): Before=False, RepairResult=True, After=True. [Captured repair output](../../evidence/client/ticket04-repair-output.txt). Subsequent [standard-user acceptance](../../evidence/client/client-staff-acceptance.json) and [live demo](../../evidence/client/demo.gif) completed successfully. A fresh post-repair Windows sign-in error/recovery sequence was not recorded; the evidence is the actual machine secure-channel repair.
+
+![Recorded actual channel checks reviewed on CLIENT01](../../evidence/client/ticket04-recorded-review.png)
+
+This is an explicitly labelled review of captured JSON, not a live logon-failure screen. The repair credential is not included.
 
 ## Prevent
 
-Avoid reverting domain members to old snapshots, duplicate computer names and uncontrolled machine account resets. Use supported backups and document credential/identity changes. Never roll a DC back casually to fix one client.
-
-## Evidence / observed result
-
-- Before: actual trust error / false secure-channel result - pending.
-- Diagnosis: DNS/time/account checks plus relevant NETLOGON event - pending.
-- After: repair output, true channel and successful domain-user sign-in - pending.
-- Commands, exact fault cause and timestamps - pending.
+Avoid uncontrolled computer-account resets, duplicate computer names and reverting domain members to stale snapshots. Keep a local recovery account available. Separate DNS, time and machine-secret diagnosis; repair only the affected member. Do not use this member-client repair procedure on a DC.

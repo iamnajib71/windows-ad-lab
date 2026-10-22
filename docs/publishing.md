@@ -1,6 +1,6 @@
 # Publish on GitHub
 
-The repository is intended to be public at `iamnajib71/windows-ad-lab`. Publishing source before live verification must retain the README's incomplete status. Release v1.0.0 should be published only once the evidence register, five worked ticket outcomes, real demo and live acceptance gates are complete. A draft release is not a finished lab.
+The public repository is `iamnajib71/windows-ad-lab`. The source was published during implementation with its status explicitly marked. The completion update includes five worked ticket outcomes, a real 59.62-second demo, 10 server checks, 6 standard-user client checks and 27 offline tests. Release v1.0.0 follows the final commit's green CI. The commands below document initial creation and publishing; do not recreate the existing repository.
 
 ```powershell
 git config user.name 'Nazmul Hassan'

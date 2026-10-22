@@ -1,0 +1,32 @@
+Transcript started, output file is C:\LabEvidence\Ticket04-before-client.txt
+
+
+Name           : _ldap._tcp.dc._msdcs.corp.lab
+NameTarget     : dc01.corp.lab
+Port           : 389
+PSComputerName : CLIENT01
+RunspaceId     : ffde21cc-ccec-499c-97d4-7c3ea8c96006
+
+Name           : dc01.corp.lab
+NameTarget     : 
+Port           : 
+PSComputerName : CLIENT01
+RunspaceId     : ffde21cc-ccec-499c-97d4-7c3ea8c96006
+
+Leap Indicator: 3(not synchronized)
+Stratum: 1 (primary reference - syncd by radio clock)
+Precision: -23 (119.209ns per tick)
+Root Delay: 0.0000753s
+Root Dispersion: 0.0100002s
+ReferenceId: 0x564D5450 (source name:  "VMTP")
+Last Successful Sync Time: 22/10/2026 7:04:05 PM
+Source: VM IC Time Synchronization Provider
+Poll Interval: 10 (1024s)
+
+SecureChannel  : False
+PSComputerName : CLIENT01
+RunspaceId     : ffde21cc-ccec-499c-97d4-7c3ea8c96006
+
+Transcript stopped, output file is C:\LabEvidence\Ticket04-before-client.txt
+
+

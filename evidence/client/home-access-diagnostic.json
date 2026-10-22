@@ -1,0 +1,20 @@
+[
+    {
+        "Path":  "\\\\DC01\\Homes\\alex.morgan",
+        "Exists":  true,
+        "CanListContents":  true,
+        "Failure":  null
+    },
+    {
+        "Path":  "\\\\DC01\\Homes\\jamie.chen",
+        "Exists":  false,
+        "CanListContents":  false,
+        "Failure":  "System.IO.DirectoryNotFoundException: Could not find a part of the path \u0027\\\\DC01\\Homes\\jamie.chen\u0027."
+    },
+    {
+        "Path":  "\\\\DC01\\HR",
+        "Exists":  false,
+        "CanListContents":  false,
+        "Failure":  "System.UnauthorizedAccessException: Access is denied"
+    }
+]

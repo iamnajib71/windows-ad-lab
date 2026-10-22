@@ -17,3 +17,4 @@ evidence/private/
 *.clixml
 *.gif
 !evidence/demo.gif
+!evidence/client/demo.gif

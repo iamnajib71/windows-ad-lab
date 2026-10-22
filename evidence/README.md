@@ -1,24 +1,30 @@
 # Evidence register
 
-Only actual machine results belong here. Every item below is **pending** unless a linked file and verification date are supplied. Mocked tests must never be labelled AD/Hyper-V integration evidence.
+Actual machine outputs, reviewed guest screenshots and a real guest recording. Verification date: 22 October 2026, Australia/Sydney. Offline tests mock AD and are separate from live checks.
 
-| Evidence | Required proof | State |
-| --- | --- | --- |
-| Offline validation | [Machine-generated result](local-validation.json): 27/27 current Pester tests, zero PSScriptAnalyzer findings; includes guest-setup XML and host-protection contracts | Verified 22 October 2026, Australia/Sydney |
-| Host safety snapshot | [Read-only machine results](host/windows-safety-check.json): C:/H: Healthy, lab VMs off, VHDX files detached, no remaining boot-repair process | Verified 21 October 2026; no pre/post boot-store binary comparison |
-| Host preparation | VM generation, Secure Boot/vTPM, switch and NAT; [actual storage migration inventory](host/storage-move-verification.json) | VMs/network created; both VM storage trees moved to E: with normal guest shutdowns on 22 October; repository/ISOs/evidence remain H: |
-| Server image | [Actual guest inventory](server/dc-live-state.json) | Server Core is installed and running; the earlier host-side image approach is retired |
-| Evaluation editions | [Server evaluation inventory](server/dc-live-state.json), [client evaluation inventory](client/client-first-boot.json), [server activation/expiry](server/evaluation-activation.txt) | Both evaluation editions verified; server activation succeeded until 20 April 2027; client activation check pending |
-| Domain | [10 real server checks passed](server/server-with-client-acceptance.json), including DNS SRV, DHCP configuration, protected OUs and client account; [CLIENT01 membership](client/post-join-inventory.txt), [secure channel](client/secure-channel.txt) and [DHCP lease](server/dhcp-leases.json) | Verified 22 October 2026; 10 passed, 0 failed, 0 excluded |
-| Onboarding/offboarding | [Actual account, reset, home ACL and leaver results](server/identity-and-recovery-transcript.txt) | Executed on DC01, 22 October 2026; console screenshots and client access tests remain pending |
-| Policy | [Native GPO XML](server/server-group-policy-report.xml), [AD password policy](server/server-domain-password-policy.json), [server printer](server/printer-install-transcript.txt) and [client driver registration](client/printer-driver-registration.txt) | Eight LAB GPOs configured and recognised by Group Policy; client `gpresult`, effective registry, drives and printer connection pending |
-| RSAT | ADUC, GPMC and DNS consoles running on CLIENT01 | Pending |
-| Tickets 01-05 | Before/diagnose/after evidence with commands and observed outcomes | Pending |
-| Recovery | [Recycle Bin restore with the same GUID](server/recycle-restore.json) and [successful System State backup/catalogue](server/system-state-backup-transcript.txt) | Verified 22 October 2026; no System State restore claimed |
-| Demo | 30-90 second GIF of real onboarding and client policy application | Pending |
+| Evidence | Observed result |
+| --- | --- |
+| [Offline validation](local-validation.json) | 27 tests passed; zero PSScriptAnalyzer findings |
+| [Server acceptance](server/server-with-client-acceptance.json) | 10 passed, 0 failed, 0 excluded, including CLIENT01 account |
+| [Client acceptance](client/client-staff-acceptance.json) | 6 passed, 0 failed, 0 excluded as standard user Alex |
+| [Computer policy](client/client-computer-check.json) | Domain join, healthy channel, SMB signing, LLMNR and update values |
+| [User policy and permissions](client/FinalChecks-state.json) | Finance/own home allowed; HR/other home denied; maps, restriction, printer |
+| [User gpresult](client/FinalChecks-gpresult.txt) / [computer gpresult](client/gpresult-computer.txt) | Actual applied policies from DC01 |
+| [Identity execution](server/identity-and-recovery-transcript.txt) | Fictional onboarding, reset, home ACL and leaver |
+| [Native GPO export](server/server-group-policy-report.xml) | Eight LAB GPOs; client processing verified separately |
+| [RSAT](client/README.md#rsat) | ADUC, GPMC and DNS consoles on CLIENT01 |
+| [Five tickets](../README.md#five-support-tickets) | Deliberately reproduced and repaired, with commands and evidence |
+| [Object restore](server/recycle-restore.json) | Same GUID and original OU, remaining disabled |
+| [System State backup](server/system-state-backup-transcript.txt) | Completed and catalogued; no System State restore claimed |
+| [Server activation](server/evaluation-activation.txt) / [client activation](client/evaluation-activation.txt) | Evaluation editions and expiry |
+| [Demo and provenance](client/README.md#demo) | 59.62 seconds: onboarding and client policy refresh |
+| [Storage migration](host/storage-move-verification.json) | Guest storage E: SSD; repo/media/evidence H: |
+| [Historical safety snapshot](host/windows-safety-check.json) | Dated 21 October; no host boot-store binary comparison |
 
-Store raw recordings, credentials and unreviewed transcripts in ignored `.lab` or `evidence/private`. Use only fictional lab sessions. Inspect screens for host account names, email, notifications, secrets and unrelated applications before committing. Redact private values if necessary and describe the redaction; do not alter observed outcomes. Include timestamp/timezone and SHA256 hashes for reviewed evidence. Host inventory can expose unrelated VM names: publish only this lab's selected records.
+Ticket 02/03 screenshots and the share repair were captured during the exercises. Ticket 01/04 and the readable ticket-05 summary are explicitly labelled **recorded-result reviews** on CLIENT01, backed by original before/after files. They are not live sign-in error screenshots. No image simulates the lab.
 
-`Export-LabClientEvidence.ps1` captures actual guest command outputs. Run as the fictional domain user for user policy evidence, and separately elevated for computer policy/capabilities. A local administrator session is not proof of the fictional user's user GPO.
+The demo manifest retains frame times/hashes; source frames and protected setup media remain private. Only fictional guest identities are published. No passwords, credential objects, ISOs, VHDX files or unrelated host data are included.
 
-Demo recording plan: start with the fictional user absent; run onboarding from a prepared CSV; show the AD account/group result; switch to the domain user on CLIENT01, refresh policy or sign in, and show `gpresult` plus the department drive and desktop restriction. Record one real 30-90 second sequence. A time-compressed or edited recording must be labelled honestly. No GIF is included while deployment is pending.
+Server/client/host sha256.csv manifests hash committed bytes, accounting for Git text normalisation. UTF-16 text was transcoded to UTF-8 for browser readability. Three client transcripts replace only their Host Application transport-metadata header with an explicit redaction; observed result text is unchanged. Old setup evidence remains historical. The client WMI build is 26300; differing native servicing/base strings are preserved. A historical printer preference error is documented rather than erased.
+
+Use the [learning walkthrough](../docs/learning-walkthrough.md) to repeat the checks and understand the limits.

@@ -1,12 +1,12 @@
 ﻿**********************
 Windows PowerShell transcript start
-Start time: 20261022145309
+Start time: 20261022191129
 Username: CORP\Administrator
 RunAs User: CORP\Administrator
 Configuration Name: 
 Machine: DC01 (Microsoft Windows NT 10.0.20348.0)
 Host Application: powershell.exe -so -NoLogo -NoProfile
-Process ID: 1352
+Process ID: 3580
 PSVersion: 5.1.20348.558
 PSEdition: Desktop
 PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.20348.558
@@ -19,32 +19,32 @@ SerializationVersion: 1.1.0.1
 Pester v5.7.1
 
 Starting discovery in 1 files.
-Discovery found 10 tests in 263ms.
+Discovery found 10 tests in 304ms.
 Running tests.
 
 Running tests from 'C:\LabRepo\acceptance\Server.Acceptance.Tests.ps1'
 Describing Real DC01 services and directory
   [+] is the corp.lab Microsoft AD forest
- 252ms (194ms|57ms)
+ 310ms (256ms|53ms)
   [+] has running ADWS, DNS and DHCP
- 22ms (21ms|1ms)
+ 36ms (35ms|1ms)
   [+] has the required protected OUs
- 59ms (57ms|1ms)
+ 48ms (47ms|1ms)
   [+] authorises DC01 DHCP with the intended DNS options
- 217ms (215ms|1ms)
+ 407ms (406ms|1ms)
   [+] resolves domain controller LDAP SRV records
- 544ms (543ms|1ms)
+ 595ms (594ms|1ms)
   [+] has the expected domain password and lockout settings
- 61ms (57ms|5ms)
+ 57ms (56ms|1ms)
   [+] has enabled Recycle Bin
- 20ms (18ms|1ms)
+ 19ms (18ms|1ms)
   [+] has CLIENT01 in the intended Computers OU
- 23ms (21ms|1ms)
+ 18ms (16ms|1ms)
   [+] has the department resource group nesting and ABE shares
- 1.18s (1.18s|1ms)
+ 486ms (484ms|1ms)
   [+] has all named GPOs with enabled expected links
- 286ms (284ms|1ms)
-Tests completed in 4.59s
+ 148ms (146ms|1ms)
+Tests completed in 5.34s
 Tests Passed: 10,
 Failed: 0,
 Skipped: 0,
@@ -53,5 +53,5 @@ Inconclusive: 0,
 NotRun: 0
 **********************
 Windows PowerShell transcript end
-End time: 20261022145316
+End time: 20261022191137
 **********************

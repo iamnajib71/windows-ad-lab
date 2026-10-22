@@ -1,0 +1,113 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261022183337
+Username: CORP\alex.morgan
+RunAs User: CORP\alex.morgan
+Configuration Name: 
+Machine: CLIENT01 (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NoExit -ExecutionPolicy Bypass -File C:\LabRepo\scripts\client\Invoke-LabStaffEvidence.ps1 -Step Baseline
+Process ID: 9272
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\alex.morgan\Documents\LabEvidence\Baseline-transcript.txt
+Actual staff session: Baseline / 2026-10-22T18:33:37.2838336+11:00
+corp\alex.morgan
+PS> gpupdate /target:user /force
+Updating policy...
+
+User Policy update has completed successfully.
+PS> gpresult /scope user /r
+
+Microsoft (R) Windows (R) Operating System Group Policy Result tool v2.0
+c Microsoft Corporation. All rights reserved.
+
+Created on ?22/?10/?2026 at 6:33:48 PM
+
+
+
+RSOP data for CORP\alex.morgan on CLIENT01 : Logging Mode
+----------------------------------------------------------
+
+OS Configuration:            Member Workstation
+OS Version:                  10.0.26300
+Site Name:                   N/A
+Roaming Profile:             N/A
+Local Profile:               C:\Users\alex.morgan
+Connected over a slow link?: No
+
+
+USER SETTINGS
+--------------
+    CN=Alex Morgan,OU=Finance,OU=Staff,DC=corp,DC=lab
+    Last time Group Policy was applied: 22/10/2026 at 6:33:37 PM
+    Group Policy was applied from:      DC01.corp.lab
+    Group Policy slow link threshold:   500 kbps
+    Domain Name:                        CORP
+    Domain Type:                        Windows 2008 or later
+
+    Applied Group Policy Objects
+    -----------------------------
+        LAB-Desktop-Restrictions
+        LAB-Drive-Finance
+        LAB-Drive-HR
+        LAB-Drive-IT
+        LAB-Printer-Deployment
+
+    The following GPOs were not applied because they were filtered out
+    -------------------------------------------------------------------
+        Local Group Policy
+            Filtering:  Not Applied (Empty)
+
+    The user is a part of the following security groups
+    ---------------------------------------------------
+        Domain Users
+        Everyone
+        BUILTIN\Users
+        NT AUTHORITY\INTERACTIVE
+        CONSOLE LOGON
+        NT AUTHORITY\Authenticated Users
+        This Organization
+        LOCAL
+        GG_Finance
+        Authentication authority asserted identity
+        DL_Finance_Modify
+        Medium Mandatory Level
+
+
+PS> Get-SmbMapping
+
+LocalPath RemotePath               Status
+--------- ----------               ------
+H:        \\DC01\Homes\alex.morgan     OK
+F:        \\DC01\Finance               OK
+
+
+Observed access and desktop policy:
+
+
+Computer         : CLIENT01
+User             : CORP\alex.morgan
+Step             : Baseline
+GPUpdateExitCode : 0
+NoControlPanel   : 1
+FinanceAccess    : True
+FinanceError     :
+OwnHomeAccess    : True
+HRAccess         : False
+OtherHomeAccess  : True
+WrittenFile      :
+ReadBack         :
+
+
+
+**********************
+Windows PowerShell transcript end
+End time: 20261022183406
+**********************

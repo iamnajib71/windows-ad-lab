@@ -1,0 +1,15 @@
+
+Deployment Image Servicing and Management tool
+Version: 10.0.26100.8972
+
+Image Version: 10.0.26300.9457
+
+Capability Identity : Rsat.Dns.Tools~~~~0.0.1.0
+Name : Rsat.Dns.Tools
+State : Installed
+Display Name : RSAT: DNS Server Tools
+Description : DNS Server Tools include the DNS Manager snap-in, dnscmd.exe command-line tool and Windows PowerShell module for DNS Server.
+Download Size :  0 bytes
+Install Size : 17.42 MB
+
+The operation completed successfully.

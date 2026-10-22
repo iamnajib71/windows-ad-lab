@@ -23,8 +23,10 @@ Describe 'Real fictional staff client experience' {
     It 'permits Finance and own home access while denying HR and another home' {
         Test-Path '\\DC01\Finance' | Should -BeTrue
         Test-Path '\\DC01\Homes\alex.morgan' | Should -BeTrue
-        Test-Path '\\DC01\HR' -ErrorAction SilentlyContinue | Should -BeFalse
-        Test-Path '\\DC01\Homes\jamie.chen' -ErrorAction SilentlyContinue | Should -BeFalse
+        # Existence queries can use cached metadata. Attempt actual enumeration;
+        # ABE may return path-not-found for the known other user's private home.
+        { Get-ChildItem -LiteralPath '\\DC01\HR' -ErrorAction Stop } | Should -Throw
+        { Get-ChildItem -LiteralPath '\\DC01\Homes\jamie.chen' -ErrorAction Stop } | Should -Throw
     }
     It 'has the deployed shared virtual printer' {
         @(Get-Printer | Where-Object Name -eq '\\DC01\LAB-Printer').Count | Should -Be 1

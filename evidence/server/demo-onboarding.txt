@@ -1,0 +1,34 @@
+Transcript started, output file is C:\LabEvidence\demo-onboarding-transcript.txt
+
+
+CapturedAt     : 2026-10-22T19:10:39.1755880+11:00
+BeforeCount    : 0
+PSComputerName : DC01
+RunspaceId     : e3c6e0a9-0491-49c9-9943-380fe89321b7
+
+Account        : demo.onboard
+Result         : Created
+Department     : Finance
+PSComputerName : DC01
+RunspaceId     : e3c6e0a9-0491-49c9-9943-380fe89321b7
+
+SamAccountName : demo.onboard
+Enabled        : True
+Department     : Finance
+HomeDirectory  : \\DC01\Homes\demo.onboard
+pwdLastSet     : 0
+mail           : demo.onboard@corp.example.invalid
+PSComputerName : DC01
+RunspaceId     : e3c6e0a9-0491-49c9-9943-380fe89321b7
+
+Name           : Domain Users
+PSComputerName : DC01
+RunspaceId     : e3c6e0a9-0491-49c9-9943-380fe89321b7
+
+Name           : GG_Finance
+PSComputerName : DC01
+RunspaceId     : e3c6e0a9-0491-49c9-9943-380fe89321b7
+
+Transcript stopped, output file is C:\LabEvidence\demo-onboarding-transcript.txt
+
+

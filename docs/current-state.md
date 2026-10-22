@@ -1,24 +1,26 @@
-# Deployment state — 22 October 2026 (Australia/Sydney)
+# Deployment state — 22 October 2026
 
-Verified on the actual lab:
+The two-machine lab is deployed; all five support exercises are repaired. Timestamps use Australia/Sydney (UTC+11). The [learning walkthrough](learning-walkthrough.md) explains the implementation, decisions, failures and repeatable commands.
 
-- DC01 runs Windows Server 2022 Standard Evaluation Core and is the domain controller for `corp.lab` / `CORP`. The official ISOs, repository and evidence remain on H:. Both VM storage trees now live under E:\WindowsADLab on the data SSD.
-- [Ten live server checks passed](../evidence/server/server-with-client-acceptance.json): directory identity, ADWS/DNS/DHCP services, protected OUs, DHCP authorisation/options, LDAP SRV resolution, password/lockout policy, Recycle Bin, AGDLP/ABE shares and expected GPO links. The complete rerun includes CLIENT01 in the managed Computers OU; the earlier nine-check result remains as historical evidence.
-- The managed Computers OU is `OU=Computers,OU=Lab,DC=corp,DC=lab`, avoiding the built-in root Computers container. Staff, Admins, Disabled and department Groups OUs are present.
-- Three fictional CSV staff accounts were created, a password reset required change at next sign-in, and a separate leaver was disabled, stripped of direct groups and moved to Disabled. The private home ACL was inspected. [Actual results](../evidence/server/identity-and-recovery-transcript.txt).
-- The disposable `recycle.demo` object was deleted and restored with the same GUID and original OU, remaining disabled. [Restore result](../evidence/server/recycle-restore.json).
-- All eight LAB GPOs were created and linked. The shared `LAB-Printer` queue uses the signed Microsoft Generic/Text driver extracted from image 2 of the official Server evaluation ISO. PnPUtil accepted its catalog inside DC01.
-- A real System State backup to the dedicated E: virtual disk completed successfully. The catalogue lists version `10/22/2026-01:43` and includes System State recovery. [Actual wbadmin output](../evidence/server/system-state-backup-transcript.txt). This does not demonstrate a System State restore.
-- All three fictional staff accounts were initially checked with `pwdLastSet=0`. Alex subsequently completed the required initial password change through the native Windows API using the existing password; no password is published. [Actual change result](../evidence/server/initial-staff-password-change.json).
-- A read-only observer captures lab VM consoles and memory status privately on H:. Console screenshot publication remains pending a fresh visible guest screen.
+| Component | Actual result |
+| --- | --- |
+| DC01 | Server 2022 Standard Evaluation Core; corp.lab / CORP; AD DS, DNS, DHCP, file shares and lab printer |
+| CLIENT01 | Windows 11 Enterprise Evaluation; domain joined; DHCP .100; computer in OU=Computers,OU=Lab,DC=corp,DC=lab |
+| Server acceptance | [10 passed, 0 failed, 0 excluded](../evidence/server/server-with-client-acceptance.json), 19:11 |
+| Standard-user acceptance | [6 passed, 0 failed, 0 excluded](../evidence/client/client-staff-acceptance.json), 19:11, actual CORP\alex.morgan session |
+| Computer policy | [SMB signing required, LLMNR off, Windows Update settings](../evidence/client/client-computer-check.json); [gpresult](../evidence/client/gpresult-computer.txt) |
+| User policy | [Finance/home maps, printer, restriction and access boundaries](../evidence/client/FinalChecks-state.json); [gpresult](../evidence/client/FinalChecks-gpresult.txt) |
+| RSAT | [ADUC, GPMC and DNS on CLIENT01](../evidence/client/README.md#rsat); three capabilities Installed |
+| Identity | [Fictional onboarding, reset/must-change and leaver execution](../evidence/server/identity-and-recovery-transcript.txt) |
+| Tickets | Five deliberately reproduced and repaired faults; [runbooks](../README.md#five-support-tickets) |
+| Demo | [59.62-second real capture](../evidence/client/demo.gif), new fictional account then client policy refresh |
+| Recovery | [Same-GUID restore](../evidence/server/recycle-restore.json); [System State backup/catalogue](../evidence/server/system-state-backup-transcript.txt); no System State restore |
+| Offline validation | [27 passed; zero analysis findings](../evidence/local-validation.json), separate from live guest checks |
 
-Outstanding:
+VM storage is on the E: SSD under `E:\WindowsADLab`; repository, ISOs and evidence remain on H:. [Storage verification](../evidence/host/storage-move-verification.json) records the migration. Memory caps are 2/4 GiB; startup guards retain 2 GiB free host RAM.
 
-- CLIENT01 has completed setup and booted Windows 11 Enterprise Evaluation build 26300. Its setup DVD drives were removed. [Actual first-boot inventory](../evidence/client/client-first-boot.json). DC01 has a CLIENT01 account in the managed Computers OU and an active `.100` DHCP lease. [Actual server observations](../evidence/server/client-account-and-lease.txt). Post-restart membership and secure-channel verification succeeded.
-- VM RAM is capped at 2 GiB for DC01 and 4 GiB for CLIENT01. The 2 GiB host startup headroom check remains enabled. Storage relocation completed after normal shutdown of both guests using Hyper-V Move-VMStorage. [Actual paths and selected volume inventory](../evidence/host/storage-move-verification.json) confirm E: VM storage, with C: unchanged by that move.
-- CLIENT01 membership, its DHCP lease and a healthy secure channel have been verified. [Actual client checks](../evidence/client/README.md). Applied GPOs/`gpresult`, RSAT screenshots, five executed ticket evidence sets and the 30–90 second demo GIF are pending. No v1.0.0 release has been published.
-- [Server evaluation activation](../evidence/server/evaluation-activation.txt) succeeded, with expiry reported as 20 April 2027 at 15:13. Client activation and current servicing levels still require verification. RSAT is installing through Windows Update; its first capability completed without a reboot requirement. The signed printer driver is registered on CLIENT01, but staff printer policy is not yet verified.
+Server evaluation expiry is 20 April 2027 at 15:13; [client activation](../evidence/client/evaluation-activation.txt) reports 20 January 2027 at 14:20:39. WMI reports client build 26300; native servicing and desktop base-build strings differ and are preserved as observed.
 
-The original host-side boot-file approach was stopped and retired. The [earlier safety snapshot](../evidence/host/windows-safety-check.json) is dated 21 October and is not a fresh or binary pre/post comparison. The current workflow performs Windows setup inside lab VMs; it does not run host boot repair, mount guest VHDX files on the host or repartition host drives.
+Limits: one DC/client, evaluation software, no production change management, no physical printer, no independent backup medium, no System State restore, no full update/restart cycle, and no Entra ID/Intune. One printer preference refresh reported 0x8007000a; subsequent refreshes and final tests show the connection. No security bypass or root-cause repair for that transient error is claimed.
 
-Do not rerun Prepare or replace the existing encrypted credentials. Both guests' completed setup DVD drives have been removed. Resume from verified guest state. The lab remains incomplete until the outstanding live checks and evidence are finished.
+The earlier host-side image approach was retired. The [21 October safety snapshot](../evidence/host/windows-safety-check.json) is historical, not a binary before/after comparison of the host boot store. Current setup occurs inside the VMs. Do not rerun Prepare or replace the existing DPAPI-protected credentials to resume this completed lab.

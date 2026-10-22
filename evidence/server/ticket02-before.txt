@@ -1,0 +1,18 @@
+Transcript started, output file is C:\LabEvidence\Ticket02-before-server.txt
+
+
+GPO            : LAB-Drive-Finance
+Drive          : F:
+Path           : \\DC01\HR
+CapturedAt     : 2026-10-22T18:42:43.1128755+11:00
+PSComputerName : DC01
+RunspaceId     : 5b4852ee-d793-4741-a5dd-c4593bcd1a1e
+
+DisplayName    : LAB-Drive-Finance
+UserVersion    : 
+PSComputerName : DC01
+RunspaceId     : 5b4852ee-d793-4741-a5dd-c4593bcd1a1e
+
+Transcript stopped, output file is C:\LabEvidence\Ticket02-before-server.txt
+
+

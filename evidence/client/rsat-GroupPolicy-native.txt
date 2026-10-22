@@ -1,0 +1,15 @@
+
+Deployment Image Servicing and Management tool
+Version: 10.0.26100.8972
+
+Image Version: 10.0.26300.9457
+
+Capability Identity : Rsat.GroupPolicy.Management.Tools~~~~0.0.1.0
+Name : Rsat.GroupPolicy.Management.Tools
+State : Installed
+Display Name : RSAT: Group Policy Management Tools
+Description : Group Policy Management Tools include Group Policy Management Console, Group Policy Management Editor, and Group Policy Starter GPO Editor.
+Download Size :  0 bytes
+Install Size : 48.63 MB
+
+The operation completed successfully.

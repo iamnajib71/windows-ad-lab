@@ -1,0 +1,31 @@
+Transcript started, output file is C:\LabEvidence\Ticket05-after-server.txt
+
+Name    ScopeName AccountName            AccessControlType AccessRight
+----    --------- -----------            ----------------- -----------
+Finance *         CORP\Domain Admins     Allow             Full       
+Finance *         CORP\DL_Finance_Modify Allow             Change     
+
+
+
+IdentityReference         FileSystemRights AccessControlType IsInherited
+-----------------         ---------------- ----------------- -----------
+NT AUTHORITY\SYSTEM            FullControl             Allow       False
+BUILTIN\Administrators         FullControl             Allow       False
+CORP\DL_Finance_Modify Modify, Synchronize             Allow       False
+
+
+
+
+Name           : Alex Morgan
+SamAccountName : alex.morgan
+PSComputerName : DC01
+RunspaceId     : 60745a2d-59d4-4359-aac8-dfe108eab3c8
+
+Name           : GG_Finance
+SamAccountName : GG_Finance
+PSComputerName : DC01
+RunspaceId     : 60745a2d-59d4-4359-aac8-dfe108eab3c8
+
+Transcript stopped, output file is C:\LabEvidence\Ticket05-after-server.txt
+
+

@@ -1,0 +1,11 @@
+{
+    "CapturedAt":  "2026-10-22T19:11:35.0567905+11:00",
+    "Computer":  "CLIENT01",
+    "User":  "CORP\\alex.morgan",
+    "Passed":  6,
+    "Failed":  0,
+    "NotRun":  0,
+    "Failures":  [
+
+                 ]
+}

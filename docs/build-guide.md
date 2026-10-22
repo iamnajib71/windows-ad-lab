@@ -46,7 +46,7 @@ Start-Lab counts only stopped requested VMs. It sends one Space through Hyper-V'
 
 Configure waits up to an hour per first-boot PowerShell Direct session, promotes DC01 (guest restart), configures AD/DNS/DHCP/shares/policy/print queue, joins CLIENT01 (guest restart) and installs RSAT. Capabilities need outbound Internet via NAT. Install current Windows servicing updates in both guests before treating the focused baseline as validated.
 
-Manual actions are evaluation registration/licence review if prompted, UAC approval, resource/network conflicts, setup prompts not handled by the answer file, interactive user sign-in and console evidence. Do not bypass authentication/security/licence prompts. Inspect guest Panther errors before changing setup. DC01 reached a verified domain-controller state on the downloaded build; client setup and sign-in remain pending.
+Manual actions are evaluation registration/licence review if prompted, UAC approval, resource/network conflicts, setup prompts not handled by the answer file, interactive user sign-in and console evidence. Do not bypass authentication/security/licence prompts. Inspect guest Panther errors before changing setup. Both guests are now installed, domain membership and standard-user policy are verified, and the [learning walkthrough](learning-walkthrough.md) records the actual build and troubleshooting sequence.
 
 ## Inspect and recover partial builds
 

@@ -1,0 +1,17 @@
+Transcript started, output file is C:\LabEvidence\Ticket01After-server.txt
+
+
+SamAccountName : alex.morgan
+LockedOut      : False
+badPwdCount    : 0
+lockoutTime    : 0
+PSComputerName : DC01
+RunspaceId     : 79564233-28fc-40cc-9c8c-cdd60d7f8001
+
+CorrectPasswordAfterUnlockAuthenticated : True
+PSComputerName                          : DC01
+RunspaceId                              : 79564233-28fc-40cc-9c8c-cdd60d7f8001
+
+Transcript stopped, output file is C:\LabEvidence\Ticket01After-server.txt
+
+

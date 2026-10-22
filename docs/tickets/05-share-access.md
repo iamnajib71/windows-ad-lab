@@ -1,59 +1,54 @@
-# Ticket 05 - User cannot access a department share
+# Ticket 05 — Finance share access denied
 
-Status: **pending live execution**. Scenario: Alex is correctly in Finance but cannot access the Finance share.
+**Resolved, 22 October 2026.** At 18:54 the Finance domain-local group's share Change grant was deliberately revoked. Group nesting and NTFS Modify remained intact. Alex received Access is denied for Finance while the own home still worked. Restoring only the share grant at 18:55 restored Finance write/read access.
 
 ## Reproduce
 
-Capture the known-good share/NTFS ACLs first. On DC01 temporarily revoke only the Finance domain-local share grant:
+On DC01, verify Finance points to C:\LabData\Finance. In the disposable lab only:
 
 ```powershell
-Get-SmbShareAccess -Name Finance
-(Get-Acl C:\LabData\Finance).Access | Format-Table
+Get-SmbShare Finance | Select-Object Name,Path
 Revoke-SmbShareAccess -Name Finance -AccountName 'CORP\DL_Finance_Modify' -Force
+Get-SmbSession | Where-Object ClientUserName -eq 'CORP\alex.morgan' | Close-SmbSession -Force
 ```
 
-Sign Alex out/in on CLIENT01 to avoid an existing SMB session masking the change. Try `\\DC01\Finance`; capture the actual denial or error. This lab-only fault affects all fictional Finance users until restored.
+Closing only Alex's lab SMB sessions forces a fresh share access check. Do not close unrelated sessions. [Actual server fault output](../../evidence/server/ticket05-before.txt).
 
 ## Diagnose
 
 ```powershell
-# Alex's CLIENT01 session:
+# CLIENT01, Alex
 whoami /groups
 Get-SmbMapping
-Test-NetConnection DC01 -Port 445
-Get-ChildItem \\DC01\Finance
-# DC01 lab admin:
-Get-ADPrincipalGroupMembership alex.morgan | Select-Object Name
-Get-ADGroupMember DL_Finance_Modify | Select-Object Name
+Get-ChildItem \\DC01\Finance -ErrorAction Stop
+Get-ChildItem \\DC01\Homes\alex.morgan -ErrorAction Stop
+# DC01
 Get-SmbShareAccess Finance
-(Get-Acl C:\LabData\Finance).Access | Format-Table IdentityReference,FileSystemRights,AccessControlType,IsInherited
-Get-SmbSession | Select-Object ClientComputerName,ClientUserName,NumOpens
+(Get-Acl C:\LabData\Finance).Access | Format-Table
+Get-ADGroupMember GG_Finance
+Get-ADGroupMember DL_Finance_Modify
 ```
 
-Confirm the intended AGDLP chain, current token, SMB reachability, share grant and NTFS grant. Effective network access is limited by both share and NTFS permissions; explicit deny entries can override allows. In this injected fault, the missing share grant should be the cause, while NTFS and membership remain correct. Record any deviation.
+[Before state](../../evidence/client/Ticket05Before-state.json) records FinanceAccess=False with Access is denied, while OwnHomeAccess=True. The server record preserves intact NTFS/group configuration. Share and NTFS permissions intersect; a correct NTFS grant cannot compensate for the missing share grant.
 
 ## Fix and verify
 
 ```powershell
-# DC01 lab admin - restore exactly the intended group grant:
+# DC01
 Grant-SmbShareAccess -Name Finance -AccountName 'CORP\DL_Finance_Modify' -AccessRight Change -Force
-Get-SmbShareAccess Finance
-# Alex's fresh CLIENT01 user session:
-$testFile='\\DC01\Finance\ticket05-alex-test.txt'
-'Fictional lab access test' | Set-Content -LiteralPath $testFile
-Get-Content -LiteralPath $testFile
-Test-Path \\DC01\HR
+Get-SmbSession | Where-Object ClientUserName -eq 'CORP\alex.morgan' | Close-SmbSession -Force
+# CLIENT01, Alex
+Get-ChildItem \\DC01\Finance -ErrorAction Stop
 ```
 
-Capture successful Finance create/read, HR denial, and private home isolation (another user's home must be denied). Delete only your own named test file after evidence review. Do not grant Everyone Full Control or add the staff user to Administrators to solve access problems.
+[Server correction](../../evidence/server/ticket05-after.txt); [after state and readback](../../evidence/client/Ticket05After-state.json); [after transcript](../../evidence/client/Ticket05After-transcript.txt). HR/another home remain inaccessible. The original repair screenshot is 18:56; JSON was recollected at 19:01 after correcting plain-text evidence serialization.
+
+![Actual recorded before/after access results reviewed on CLIENT01](../../evidence/client/ticket05-recorded-review.png)
+
+The summary explicitly reviews saved results, rather than presenting the historical fault as current.
+
+![Actual Finance write/read after repair](../../evidence/client/ticket05-after.png)
 
 ## Prevent
 
-Maintain resource permissions on domain-local groups, review ACLs against declared state, and test both allowed and denied users after changes. ABE improves browsing but is not an authorisation boundary. Document root cause rather than treating every denial as a group membership problem.
-
-## Evidence / observed result
-
-- Before: Alex's access denied plus share grant missing - pending.
-- Diagnosis: intact group/NTFS chain and SMB reachability - pending.
-- After: restored group share grant, Finance file access and negative HR/home tests - pending.
-- Actual commands, timestamps and closure notes - pending.
+Manage resource permissions through the domain-local groups and verify both share and NTFS layers. Test with the affected standard user, including a negative department check. Avoid Everyone:FullControl, direct per-user department grants or disabling ABE to bypass diagnosis.

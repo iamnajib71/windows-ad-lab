@@ -1,0 +1,46 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261022183804
+Username: CORP\alex.morgan
+RunAs User: CORP\alex.morgan
+Configuration Name: 
+Machine: CLIENT01 (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -NoExit -WindowStyle Maximized -ExecutionPolicy Bypass -File C:\LabTasks\inspect-home-user.ps1
+Process ID: 4460
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\alex.morgan\Documents\LabEvidence\home-access-diagnostic.txt
+corp\alex.morgan
+PS>TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Could not find a part of the path '\\DC01\Homes\jamie.chen'."
+PS>TerminatingError(Get-ChildItem): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Access is denied"
+
+
+Path            : \\DC01\Homes\alex.morgan
+Exists          : True
+CanListContents : True
+Failure         :
+
+Path            : \\DC01\Homes\jamie.chen
+Exists          : False
+CanListContents : False
+Failure         : System.IO.DirectoryNotFoundException: Could not find a part of the path
+                  '\\DC01\Homes\jamie.chen'.
+
+Path            : \\DC01\HR
+Exists          : False
+CanListContents : False
+Failure         : System.UnauthorizedAccessException: Access is denied
+
+
+
+**********************
+Windows PowerShell transcript end
+End time: 20261022183804
+**********************

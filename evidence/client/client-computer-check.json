@@ -1,0 +1,22 @@
+{
+    "CapturedAt":  "2026-10-22T17:52:31.5437209+11:00",
+    "Computer":  {
+                     "Name":  "CLIENT01",
+                     "Domain":  "corp.lab",
+                     "PartOfDomain":  true
+                 },
+    "OS":  {
+               "Caption":  "Microsoft Windows 11 Enterprise Evaluation",
+               "Version":  "10.0.26300",
+               "BuildNumber":  "26300"
+           },
+    "SecureChannel":  true,
+    "SMBSigningRequired":  true,
+    "EnableMulticast":  0,
+    "WindowsUpdate":  {
+                          "AUOptions":  4,
+                          "ScheduledInstallDay":  0,
+                          "ScheduledInstallTime":  3,
+                          "NoAutoRebootWithLoggedOnUsers":  1
+                      }
+}

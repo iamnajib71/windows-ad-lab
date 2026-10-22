@@ -1,0 +1,37 @@
+{
+    "CapturedAt":  "2026-10-22T18:34:01.0769414+11:00",
+    "Computer":  "CLIENT01",
+    "User":  "CORP\\alex.morgan",
+    "Step":  "Baseline",
+    "GPUpdateExitCode":  0,
+    "NoControlPanel":  1,
+    "DriveMappings":  [
+                          {
+                              "LocalPath":  "H:",
+                              "RemotePath":  "\\\\DC01\\Homes\\alex.morgan",
+                              "Status":  0
+                          },
+                          {
+                              "LocalPath":  "F:",
+                              "RemotePath":  "\\\\DC01\\Finance",
+                              "Status":  0
+                          }
+                      ],
+    "Printers":  [
+                     {
+                         "Name":  "Microsoft Print to PDF",
+                         "DriverName":  "Microsoft Print To PDF"
+                     },
+                     {
+                         "Name":  "\\\\DC01\\LAB-Printer",
+                         "DriverName":  "Generic / Text Only"
+                     }
+                 ],
+    "FinanceAccess":  true,
+    "FinanceError":  null,
+    "OwnHomeAccess":  true,
+    "HRAccess":  false,
+    "OtherHomeAccess":  true,
+    "WrittenFile":  null,
+    "ReadBack":  null
+}
