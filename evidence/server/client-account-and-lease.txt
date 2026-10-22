@@ -1,0 +1,22 @@
+
+
+Name              : CLIENT01
+DistinguishedName : CN=CLIENT01,OU=Computers,OU=Lab,DC=corp,DC=lab
+PasswordLastSet   : 22/10/2026 1:57:25 PM
+PSComputerName    : DC01
+RunspaceId        : 9cca00ab-f566-4e62-82ca-a69006f405d7
+
+SamAccountName : alex.morgan
+pwdLastSet     : 134371113619151863
+PSComputerName : DC01
+RunspaceId     : 9cca00ab-f566-4e62-82ca-a69006f405d7
+
+IPAddress      : 192.168.77.100
+HostName       : CLIENT01.corp.lab
+AddressState   : Active
+PSComputerName : DC01
+RunspaceId     : 9cca00ab-f566-4e62-82ca-a69006f405d7
+
+
+
+

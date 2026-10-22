@@ -4,7 +4,7 @@ Only actual machine results belong here. Every item below is **pending** unless 
 
 | Evidence | Required proof | State |
 | --- | --- | --- |
-| Offline validation | [Machine-generated result](local-validation.json): 26/26 current Pester tests, zero PSScriptAnalyzer findings; includes guest-setup XML and host-protection contracts | Verified 22 October 2026, Australia/Sydney |
+| Offline validation | [Machine-generated result](local-validation.json): 27/27 current Pester tests, zero PSScriptAnalyzer findings; includes guest-setup XML and host-protection contracts | Verified 22 October 2026, Australia/Sydney |
 | Host safety snapshot | [Read-only machine results](host/windows-safety-check.json): C:/H: Healthy, lab VMs off, VHDX files detached, no remaining boot-repair process | Verified 21 October 2026; no pre/post boot-store binary comparison |
 | Host preparation | VM generation, Secure Boot/vTPM, paths on H:, switch and NAT | VMs/network created; final inventory pending |
 | Server image | [Actual guest inventory](server/dc-live-state.json) | Server Core is installed and running; the earlier host-side image approach is retired |

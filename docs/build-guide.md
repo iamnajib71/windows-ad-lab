@@ -64,6 +64,8 @@ Remove-PSSession $dc
 
 Resume individual guest scripts only after checking actual state. Do not rerun Prepare against existing VMs or replace credentials. Cached answer files/private setup ISOs remain sensitive: inspect/scrub after setup finishes, retaining credentials securely. PowerShell Direct needs no WinRM exposure or second DC NIC.
 
+If a client join succeeded but a restart interrupted RSAT installation, wait for the guest to finish restarting, inspect its membership and secure channel, then use `Invoke-LabBuild.ps1 -Stage ConfigureClient -ResumeClient`. This accepts only the interrupted configuration state, requires actual `CLIENT01` membership in `corp.lab` and a healthy secure channel, and resumes management-tool installation. It never repeats the domain join. Guest automation allows script execution only in each temporary PowerShell session; the host execution policy is unchanged.
+
 Completion requires editions/expiry, DC health, DNS/DHCP, domain membership, secure channel, actual identity operations, user/computer GPOs, RSAT screenshots, positive/negative file access, five worked tickets, Recycle Bin restore, System State backup and a real demo. Optional Pester files in `acceptance/` are outside CI: copy into the guests and run the server file on DC01 and client file as CORP\alex.morgan after first password change and before offboarding.
 
 Shut down guests normally. Teardown is manual: inspect exact paths and preserve evidence/backups before deleting named lab resources. Switch/NAT names are `WindowsADLab-Internal` and `WindowsADLab-NAT`. Checkpoints are not backups.

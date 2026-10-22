@@ -37,3 +37,5 @@ RSAT from CLIENT01:
 5. Save one screenshot per console from CLIENT01. ADUC running on DC01 is not proof of client RSAT.
 
 Use guest `Start-Transcript` only after credentials have been entered and before nonsecret diagnostic commands. Stop it before any password changes. Review transcripts before copying into the evidence folder.
+
+For repeatable staff-session evidence, run `scripts/client/Invoke-LabStaffEvidence.ps1 -Step Baseline` from the actual `CORP\alex.morgan` session on CLIENT01. It records user `gpupdate`/`gpresult`, mappings, printers, desktop policy and permitted/denied share access under that fictional profile's Documents directory. `-Step FinalChecks` also runs the real client acceptance tests. Ticket-specific steps capture the observed fault or repair; they do not inject server faults or replace actual troubleshooting.

@@ -2,9 +2,11 @@
 [CmdletBinding(SupportsShouldProcess,ConfirmImpact='High')]
 param(
     [ValidateSet('Prepare','Configure','ConfigureDC','ConfigureClient')][string]$Stage='Prepare',
-    [string]$LabRoot='H:\My Projects - IT\windows-ad-lab\.lab'
+    [string]$LabRoot='H:\My Projects - IT\windows-ad-lab\.lab',
+    [switch]$ResumeClient
 )
 $ErrorActionPreference='Stop'
+if ($ResumeClient -and $Stage -ne 'ConfigureClient') { throw 'ResumeClient is supported only with ConfigureClient.' }
 $repo=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $LabRoot=[IO.Path]::GetFullPath($LabRoot)
 if ([IO.Path]::GetPathRoot($LabRoot) -eq 'C:\') { throw 'Lab storage must be on a data drive.' }
@@ -20,11 +22,26 @@ function Get-LabSecret {
     $secret
 }
 function Open-LabSession {
-    param([string]$Name,[pscredential]$Credential,[int]$TimeoutSeconds=3600)
+    param([string]$Name,[pscredential]$Credential,[int]$TimeoutSeconds=3600,[datetime]$BootAfter=[datetime]::MinValue)
     $deadline=(Get-Date).AddSeconds($TimeoutSeconds)
     while ((Get-Date) -lt $deadline) {
-        try { return New-PSSession -VMName $Name -Credential $Credential -ErrorAction Stop }
-        catch { Start-Sleep -Seconds 10 }
+        $candidate=$null
+        try {
+            $candidate=New-PSSession -VMName $Name -Credential $Credential -ErrorAction Stop
+            $minimumBootTime=$BootAfter
+            $setupComplete=Invoke-Command -Session $candidate {
+                $setup=Get-ItemProperty 'HKLM:\SYSTEM\Setup'
+                $image=Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\State'
+                [int]$setup.SystemSetupInProgress -eq 0 -and [int]$setup.OOBEInProgress -eq 0 -and $image.ImageState -eq 'IMAGE_STATE_COMPLETE' -and (Get-CimInstance Win32_OperatingSystem).LastBootUpTime -gt $using:minimumBootTime
+            }
+            if ($setupComplete) {
+                # Limit the execution-policy allowance to this guest session.
+                Invoke-Command -Session $candidate { Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force }
+                return $candidate
+            }
+        } catch { Write-Verbose "Waiting for $Name Windows setup and PowerShell Direct." }
+        if ($candidate) { Remove-PSSession $candidate -ErrorAction SilentlyContinue }
+        Start-Sleep -Seconds 10
     }
     throw "PowerShell Direct did not become ready on $Name within $TimeoutSeconds seconds. Inspect VMConnect and guest setup logs."
 }
@@ -87,6 +104,7 @@ if ($Stage -eq 'Prepare') {
 if (-not (Test-Path (Join-Path $LabRoot 'build-stage.txt'))) { throw 'Complete Prepare first.' }
 $state=(Get-Content (Join-Path $LabRoot 'build-stage.txt') -Raw).Trim()
 $expected=if ($Stage -eq 'ConfigureClient') { 'DCConfigured' } else { 'Prepared' }
+if ($ResumeClient) { $expected='Configuring - inspect logs before rerunning' }
 if ($state -ne $expected) { throw "Expected stage $expected but found $state; inspect progress before retrying." }
 if ($Stage -eq 'ConfigureDC') { & "$PSScriptRoot\Start-Lab.ps1" -VMName DC01 -BootSetup }
 else { & "$PSScriptRoot\Start-Lab.ps1" -BootSetup }
@@ -127,15 +145,25 @@ if ($Stage -eq 'ConfigureDC') { return }
     $domainCredential=[pscredential]::new('CORP\Administrator',$dcCredential.Password)
 }
 $session=Open-LabSession CLIENT01 $clientCredential
+$clientBootBefore=[datetime]::MinValue
 try {
     Remove-LabSetupDrive CLIENT01
     Copy-LabSource $session
-    Invoke-Command -Session $session {
-        & C:\LabRepo\scripts\client\Join-LabDomain.ps1 -DomainCredential $using:domainCredential -Confirm:$false
+    if ($ResumeClient) {
+        Invoke-Command -Session $session {
+            $computer=Get-CimInstance Win32_ComputerSystem
+            if ($computer.Name -ne 'CLIENT01' -or -not $computer.PartOfDomain -or $computer.Domain -ne 'corp.lab') { throw 'Resume requires verified CLIENT01 membership in corp.lab.' }
+            if (-not (Test-ComputerSecureChannel)) { throw 'Repair the client secure channel before resuming configuration.' }
+        }
+    } else {
+        $clientBootBefore=Invoke-Command -Session $session { (Get-CimInstance Win32_OperatingSystem).LastBootUpTime }
+        Invoke-Command -Session $session {
+            & C:\LabRepo\scripts\client\Join-LabDomain.ps1 -DomainCredential $using:domainCredential -Confirm:$false
+        }
     }
 } finally { Remove-PSSession $session }
-Start-Sleep -Seconds 60
-$session=Open-LabSession CLIENT01 $clientCredential
+if (-not $ResumeClient) { Start-Sleep -Seconds 60 }
+$session=Open-LabSession CLIENT01 $clientCredential -BootAfter $clientBootBefore
 try {
     Invoke-Command -Session $session {
         & C:\LabRepo\scripts\client\Install-LabRSAT.ps1

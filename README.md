@@ -2,7 +2,7 @@
 
 A Windows Server 2022 and Windows 11 evaluation lab with automated Active Directory administration, Group Policy, file services and support troubleshooting.
 
-**Build status: DC01 is configured with Windows Server 2022 Evaluation and the `corp.lab` forest. Nine live server checks passed; fictional onboarding/offboarding, a Recycle Bin restore and a System State backup have been executed.** Windows 11 setup is running in CLIENT01. Client domain membership, policy results, RSAT, worked tickets and the demo remain incomplete. See [actual server evidence](evidence/server/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
+**Build status: DC01 is configured with Windows Server 2022 Evaluation and the `corp.lab` forest. Nine live server checks passed; fictional onboarding/offboarding, a Recycle Bin restore and a System State backup have been executed.** CLIENT01 has booted Windows 11 Enterprise Evaluation. DC01 has created its computer account and issued a DHCP lease; client verification after restart, policy results, RSAT, worked tickets and the demo remain incomplete. See [actual server evidence](evidence/server/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
 
 [PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) runs static analysis and the offline tests. [Current deployment state and next steps](docs/current-state.md) records the real installation blocker.
 

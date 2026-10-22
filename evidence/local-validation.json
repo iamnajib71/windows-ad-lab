@@ -1,13 +1,13 @@
 {
-  "CapturedAt": "2026-10-22T13:09:58.6302532+11:00",
+  "CapturedAt": "2026-10-22T14:04:28.8277732+11:00",
   "PowerShell": "7.6.5",
   "Pester": "5.7.1",
-  "TestsTotal": 26,
-  "TestsPassed": 26,
+  "TestsTotal": 27,
+  "TestsPassed": 27,
   "TestsFailed": 0,
   "PSScriptAnalyzer": "1.24.0",
   "AnalyzerIssues": 0,
   "OfflineValidationOnly": true,
   "SeparateLiveServerAcceptance": "server/server-acceptance.json",
-  "Scope": "Mocked AD logic, local setup XML, operational entry point contracts and host protection checks"
+  "Scope": "Mocked AD logic, local setup XML, operational entry point contracts, staff execution boundary and host protection checks"
 }
