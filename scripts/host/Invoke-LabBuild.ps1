@@ -92,7 +92,8 @@ if ($Stage -eq 'ConfigureDC') { & "$PSScriptRoot\Start-Lab.ps1" -VMName DC01 -Bo
 else { & "$PSScriptRoot\Start-Lab.ps1" -BootSetup }
 'Configuring - inspect logs before rerunning' | Set-Content (Join-Path $LabRoot 'build-stage.txt')
 $dcCredential=Import-Clixml (Join-Path $LabRoot 'credentials\dc.xml')
-$clientCredential=Import-Clixml (Join-Path $LabRoot 'credentials\client.xml')
+$storedClientCredential=Import-Clixml (Join-Path $LabRoot 'credentials\client.xml')
+$clientCredential=[pscredential]::new('CLIENT01\LabAdmin',$storedClientCredential.Password)
 $dsrm=Import-Clixml (Join-Path $LabRoot 'credentials\dsrm.xml')
 if ($Stage -ne 'ConfigureClient') {
 $session=Open-LabSession DC01 $dcCredential
