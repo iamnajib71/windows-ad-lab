@@ -1,0 +1,13 @@
+Transcript started, output file is C:\LabEvidence\printer-install-transcript.txt
+
+
+Name           : Generic / Text Only
+Manufacturer   : Generic
+MajorVersion   : 3
+PSComputerName : CLIENT01
+RunspaceId     : 8daed6be-0e5c-487b-bd77-094ab0dd42f3
+
+Transcript stopped, output file is C:\LabEvidence\printer-install-transcript.txt
+
+
+

@@ -36,6 +36,8 @@ Test-Path \\DC01\HR
 
 Policy links created by `Set-LabGroupPolicy.ps1`:
 
+The [actual native GPO XML export](../evidence/server/server-group-policy-report.xml) records all eight LAB policies and their extension data on 22 October 2026. The [AD password-policy export](../evidence/server/server-domain-password-policy.json) records the effective domain account settings. Client processing still requires the separate `gpresult` and behaviour checks below.
+
 | Policy | Link | Setting |
 | --- | --- | --- |
 | LAB-Domain-Account-Policy | Domain root | Security template: 14-character minimum, complexity, 24 history, 1/90-day ages, 5 failures, 15-minute lockout/reset; also configured through AD domain policy cmdlet |
