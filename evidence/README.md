@@ -9,7 +9,7 @@ Only actual machine results belong here. Every item below is **pending** unless 
 | Host preparation | VM generation, Secure Boot/vTPM, paths on H:, switch and NAT | VMs/network created; final inventory pending |
 | Server image | [Actual guest inventory](server/dc-live-state.json) | Server Core is installed and running; the earlier host-side image approach is retired |
 | Evaluation editions | [Actual Server evaluation caption/build](server/dc-live-state.json); licence expiry from each guest | Server edition verified; client edition and both expiry/activation checks pending |
-| Domain | [9 real server checks passed](server/server-acceptance.json), including DNS SRV, DHCP configuration and protected OUs | Verified 22 October 2026; CLIENT01 membership and lease still pending; its acceptance test was excluded |
+| Domain | [9 real server checks passed](server/server-acceptance.json), including DNS SRV, DHCP configuration and protected OUs; [CLIENT01 membership](client/post-join-inventory.txt), [secure channel](client/secure-channel.txt) and [DHCP lease](server/client-account-and-lease.txt) | Verified 22 October 2026; full server acceptance rerun including the client remains pending |
 | Onboarding/offboarding | [Actual account, reset, home ACL and leaver results](server/identity-and-recovery-transcript.txt) | Executed on DC01, 22 October 2026; console screenshots and client access tests remain pending |
 | Policy | [GPO inventory](server/dc-live-state.json) and [shared virtual printer installation](server/printer-install-transcript.txt) | Created and links checked on DC01; client `gpresult`, effective registry, drives and printer connection pending |
 | RSAT | ADUC, GPMC and DNS consoles running on CLIENT01 | Pending |

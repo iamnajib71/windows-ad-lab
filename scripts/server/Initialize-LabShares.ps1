@@ -2,7 +2,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param([string]$DataRoot='C:\LabData')
 $ErrorActionPreference='Stop'
-if ($env:COMPUTERNAME -ne 'DC01') { throw 'Run inside DC01 only. Guest C: is a VHDX stored on host H:.' }
+if ($env:COMPUTERNAME -ne 'DC01') { throw 'Run inside DC01 only. Guest C: is a virtual disk on the lab data volume.' }
 if ($PSCmdlet.ShouldProcess($DataRoot,'Create department shares with protected NTFS ACLs and access-based enumeration')) {
     foreach ($department in @('Finance','HR','IT','Homes')) {
         $path=Join-Path $DataRoot $department

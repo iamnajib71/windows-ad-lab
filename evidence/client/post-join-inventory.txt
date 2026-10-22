@@ -1,0 +1,49 @@
+
+
+Name           : CLIENT01
+Domain         : corp.lab
+PartOfDomain   : True
+PSComputerName : CLIENT01
+RunspaceId     : a47a2f2a-340b-46ac-ae3c-660fbb37100c
+
+LastBootUpTime : 22/10/2026 2:00:22 PM
+PSComputerName : CLIENT01
+RunspaceId     : a47a2f2a-340b-46ac-ae3c-660fbb37100c
+
+Name           : DismHost
+CPU            : 0.046875
+PSComputerName : CLIENT01
+RunspaceId     : a47a2f2a-340b-46ac-ae3c-660fbb37100c
+
+Name           : MoUsoCoreWorker
+CPU            : 0.375
+PSComputerName : CLIENT01
+RunspaceId     : a47a2f2a-340b-46ac-ae3c-660fbb37100c
+
+Name           : TiWorker
+CPU            : 0.015625
+PSComputerName : CLIENT01
+RunspaceId     : a47a2f2a-340b-46ac-ae3c-660fbb37100c
+
+Name           : TrustedInstaller
+CPU            : 0.015625
+PSComputerName : CLIENT01
+RunspaceId     : a47a2f2a-340b-46ac-ae3c-660fbb37100c
+
+10/22/2026 13:57:28:695 NetpManageLocalGroupsForJoin: Adding groups for new domain, removing groups from old domain, if any.
+10/22/2026 13:57:32:938 NetpManageLocalGroupsForJoin: status of modifying groups related to domain 'CORP' to local groups: 0x0
+10/22/2026 13:57:32:938 NetpManageLocalGroupsForJoin: INFO: No old domain groups to process.
+10/22/2026 13:57:32:938 NetpJoinDomainLocal: Status of managing local groups: 0x0
+10/22/2026 13:57:33:130 NetpJoinDomainLocal: status of setting ComputerNamePhysicalDnsDomain to 'corp.lab': 0x0
+10/22/2026 13:57:33:130 NetpJoinDomainLocal: Controlling services and setting service start type.
+10/22/2026 13:57:33:130 NetpJoinDomainLocal: Updating W32TimeConfig
+10/22/2026 13:57:33:431 NetpCompleteOfflineDomainJoin: status: 0x0
+10/22/2026 13:57:33:431 NetpJoinProvider2OLContinuePackagePartInstall: ignoring Context=0 (work finished already).
+10/22/2026 13:57:33:431 NetpJoinProvider3OLContinuePackagePartInstall: ignoring Context=0 (work finished already).
+10/22/2026 13:57:33:431 NetpJoinProvider4OLContinuePackagePartInstall: ignoring Context=0 (work finished already).
+10/22/2026 13:57:33:431 NetpProvContinueProvisioningPackageInstall: Provisioning package installation completed successfully.
+10/22/2026 13:57:33:431 NetpProvContinueProvisioningPackageInstall: delete OP state key status: 0x0.
+10/22/2026 13:57:33:431 NetpProvContinueProvisioningPackageInstall: status: 0xa99.
+
+
+

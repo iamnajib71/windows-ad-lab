@@ -1,12 +1,12 @@
 # Build guide
 
-Use elevated **Windows PowerShell 5.1** for Hyper-V management. The host needs Windows 11 Pro/Enterprise, enabled firmware virtualisation and Hyper-V. Scripts never reboot the physical PC or change its page file/boot configuration. All large files live under `H:\My Projects - IT\windows-ad-lab\.lab`.
+Use elevated **Windows PowerShell 5.1** for Hyper-V management. The host needs Windows 11 Pro/Enterprise, enabled firmware virtualisation and Hyper-V. Scripts never reboot the physical PC or change its page file/boot configuration. Downloads and scratch files live under `H:\My Projects - IT\windows-ad-lab\.lab`; VM storage can use a separate data SSD.
 
 ## Storage and media
 
-Allow 65 GiB free after the roughly 13 GiB of ISO downloads. The 60 GiB DC OS, 80 GiB client OS and 40 GiB backup disks are dynamic maxima, not reserved space. Their combined maximum exceeds the current free H: capacity: keep 35 GiB headroom and expand/move storage before disks grow. Automatic checkpoints are disabled; paging/checkpoint paths point to H:.
+Allow 65 GiB free after the roughly 13 GiB of ISO downloads. The 60 GiB DC OS, 80 GiB client OS and 40 GiB backup disks are dynamic maxima, not reserved space. Keep 35 GiB headroom on each volume holding virtual disks and expand/move storage before disks grow. Automatic checkpoints are disabled. Use an SSD for the VM disks when available: Windows servicing and multiple guests generate substantial random I/O.
 
-DC01 has a 2 GiB RAM cap and CLIENT01 a 4 GiB cap. Both stopped VMs require at least 8 GiB free on the host, including 2 GiB headroom. On a constrained host, boot Windows Setup in one guest at a time with `Start-Lab.ps1 -VMName`; gracefully shut down the other guest first. Both guests must be running for domain join and policy verification. Guest Windows paging stays inside the virtual disks on H:.
+DC01 has a 2 GiB RAM cap and CLIENT01 a 4 GiB cap. Both stopped VMs require at least 8 GiB free on the host, including 2 GiB headroom. On a constrained host, boot Windows Setup in one guest at a time with `Start-Lab.ps1 -VMName`; gracefully shut down the other guest first. Both guests must be running for domain join and policy verification. Guest Windows paging stays inside the virtual disks on the selected data volume.
 
 Download [Server 2022 evaluation](https://www.microsoft.com/en-us/evalcenter/download-windows-server-2022) and [Windows 11 Enterprise evaluation](https://www.microsoft.com/en-us/evalcenter/download-windows-11-enterprise). Save as `.lab\iso\server-2022-eval.iso` and `.lab\iso\windows-11-enterprise-eval.iso`. The English-US links used are [Server](https://go.microsoft.com/fwlink/p/?LinkID=2195280&clcid=0x409&country=US&culture=en-us) and [Enterprise](https://go.microsoft.com/fwlink/?LinkId=2382600&clcid=0x409&country=us&culture=en-us); their targets may change. Compare Microsoft-published hashes where available; a locally generated hash alone is not independent authenticity verification. Record installed evaluation editions and expiry.
 
@@ -49,6 +49,8 @@ Configure waits up to an hour per first-boot PowerShell Direct session, promotes
 Manual actions are evaluation registration/licence review if prompted, UAC approval, resource/network conflicts, setup prompts not handled by the answer file, interactive user sign-in and console evidence. Do not bypass authentication/security/licence prompts. Inspect guest Panther errors before changing setup. DC01 reached a verified domain-controller state on the downloaded build; client setup and sign-in remain pending.
 
 ## Inspect and recover partial builds
+
+To move existing lab storage to an SSD, shut down only the two guests normally, then review `Move-LabVMStorage.ps1 -DestinationRoot E:\WindowsADLab -WhatIf`. Run the same command without `-WhatIf` after checking its plan. It uses Hyper-V's storage API, requires both VMs off, validates their source paths, refuses existing destination VM directories and reserves 40 GiB of destination growth space. It moves VM configuration, virtual disks and associated storage; it does not move the repository or ISOs. The startup script checks free space on the volumes actually holding the virtual disks. Dynamic disk maxima can still exceed available capacity, so monitor growth.
 
 ```powershell
 Get-VM -Name DC01,CLIENT01 | Select-Object Name,State,Generation,Path,SnapshotFileLocation,SmartPagingFilePath

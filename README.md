@@ -2,7 +2,7 @@
 
 A Windows Server 2022 and Windows 11 evaluation lab with automated Active Directory administration, Group Policy, file services and support troubleshooting.
 
-**Build status: DC01 is configured with Windows Server 2022 Evaluation and the `corp.lab` forest. Nine live server checks passed; fictional onboarding/offboarding, a Recycle Bin restore and a System State backup have been executed.** CLIENT01 has booted Windows 11 Enterprise Evaluation. DC01 has created its computer account and issued a DHCP lease; client verification after restart, policy results, RSAT, worked tickets and the demo remain incomplete. See [actual server evidence](evidence/server/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
+**Build status: DC01 is configured with Windows Server 2022 Evaluation and the `corp.lab` forest. Nine live server checks passed; fictional onboarding/offboarding, a Recycle Bin restore and a System State backup have been executed.** CLIENT01 runs Windows 11 Enterprise Evaluation, has joined `corp.lab`, received a DHCP lease and passed a secure-channel check. Policy results, RSAT, worked tickets and the demo remain incomplete. See [actual server evidence](evidence/server/README.md), [client checks](evidence/client/README.md) and the [verification register](evidence/README.md). Offline mocked tests are reported separately from guest acceptance checks.
 
 [PowerShell CI](https://github.com/iamnajib71/windows-ad-lab/actions/workflows/ci.yml) runs static analysis and the offline tests. [Current deployment state and next steps](docs/current-state.md) records the real installation blocker.
 
@@ -12,7 +12,7 @@ A Windows Server 2022 and Windows 11 evaluation lab with automated Active Direct
 flowchart TB
     Internet[Microsoft evaluation, activation and Windows Update]
     Host[Windows 11 Pro host / Hyper-V]
-    Storage["H: lab storage: ISOs, VHDX, checkpoints, scratch, backups"]
+    Storage["H: repository, ISOs, evidence and scratch\nE: SSD option for VM storage and guest backup disk"]
     NAT["Internal switch + WinNAT\n192.168.77.1/24"]
     DC["DC01 / Server 2022 Standard Evaluation Core\n192.168.77.10\nAD DS / DNS / DHCP / file shares\nlab-only virtual printer / Windows Server Backup"]
     Client["CLIENT01 / Windows 11 Enterprise Evaluation\nDHCP .100-.150\nDomain member / GPO / RSAT"]
@@ -43,7 +43,7 @@ This is the intended topology, not an assertion that deployment has finished. Th
 
 Read [the build guide](docs/build-guide.md), [operations](docs/operations.md), [policy and permissions](docs/policy-and-permissions.md), and [backup/recovery](docs/recovery.md). Host scripts require **elevated Windows PowerShell 5.1**; run guest scripts only inside the named VM. PowerShell 7 is used for local tests and CI.
 
-All large host files belong under `H:\My Projects - IT\windows-ad-lab\.lab`. Guest paths such as `C:\LabData` are inside VHDX files on H:, not the host C: drive. Windows, Hyper-V binaries, event logs and normal host paging may still use C:. Lab scripts do not relocate the host page file or change global Hyper-V defaults.
+The repository, ISOs, evidence and scratch files live under `H:\My Projects - IT\windows-ad-lab`. VM storage starts under `.lab` and can be moved to the dedicated SSD directory `E:\WindowsADLab` using the guarded Hyper-V storage script. Guest paths such as `C:\LabData` remain inside those virtual disks. Windows, Hyper-V binaries, event logs and normal host paging may still use C:. Lab scripts do not relocate the host page file or change global Hyper-V defaults.
 
 VM memory is capped at 2 GiB for DC01 and 4 GiB for CLIENT01. Startup checks retain at least 2 GiB of free host RAM; close other memory-heavy applications before running both guests.
 

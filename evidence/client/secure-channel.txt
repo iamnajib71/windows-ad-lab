@@ -1,0 +1,8 @@
+
+
+CapturedAt     : 2026-10-22T14:12:10.3219938+11:00
+SecureChannel  : True
+User           : CORP\Administrator
+PSComputerName : CLIENT01
+RunspaceId     : 1c2fba44-dde5-4f94-9660-51c793c348bb
+

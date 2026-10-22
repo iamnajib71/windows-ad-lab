@@ -7,7 +7,13 @@ $pending=@(Get-VM -Name $VMName | Where-Object State -eq 'Off')
 $startup=($pending | Measure-Object MemoryStartup -Sum).Sum
 $required=2GB+$startup
 if ($free -lt $required) { throw "Need $([math]::Ceiling($required/1GB)) GiB free RAM for the requested stopped VMs plus host headroom." }
-if ((Get-PSDrive H).Free -lt 35GB) { throw 'Keep at least 35 GiB free on H: for dynamic disk growth.' }
+$storageDrives=@(Get-VMHardDiskDrive -VMName $VMName | ForEach-Object {
+    if (-not $_.Path) { throw 'Expected file-backed lab virtual disks.' }
+    [IO.Path]::GetPathRoot($_.Path).Substring(0,1)
+} | Sort-Object -Unique)
+foreach ($drive in $storageDrives) {
+    if ((Get-PSDrive -Name $drive).Free -lt 35GB) { throw "Keep at least 35 GiB free on ${drive}: for dynamic disk growth." }
+}
 foreach ($vm in $pending) {
     if ($PSCmdlet.ShouldProcess($vm.Name,'Start lab VM')) {
         Start-VM -VM $vm
