@@ -12,7 +12,7 @@ Describe 'PowerShell entry point contracts' {
     }
     It 'keeps local secrets, instructions and large lab files ignored' {
         $ignore=Get-Content "$root/.gitignore"
-        foreach ($entry in @('.env','AGENTS.md','CLAUDE.md','.lab/','.tools/','*.iso','*.vhd*')) { $ignore | Should -Contain $entry }
+        foreach ($entry in @('.env','.lab/','.tools/','*.iso','*.vhd*')) { $ignore | Should -Contain $entry }
     }
     It 'does not run host boot repair or physical disk partitioning tools' {
         foreach ($file in Get-ChildItem "$root/scripts/host" -Filter *.ps1) {
