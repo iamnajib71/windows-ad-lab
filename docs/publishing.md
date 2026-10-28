@@ -6,7 +6,7 @@ The public repository is `iamnajib71/windows-ad-lab`. The source was published d
 git config user.name 'Nazmul Hassan'
 git config user.email 'iam.najib@yahoo.com'
 git status --short
-git check-ignore .env AGENTS.md CLAUDE.md .lab/iso/server-2022-eval.iso
+git check-ignore .env .lab/iso/server-2022-eval.iso
 # Review git diff --cached and confirm no secrets, CLIXML, VHDX or raw recordings.
 git add .github .gitattributes .gitignore .env.example LICENSE PSScriptAnalyzerSettings.psd1 README.md acceptance config data docs evidence scripts src tests
 git diff --cached --check
@@ -23,4 +23,4 @@ After real evidence and demo are reviewed/committed, confirm the latest main com
 gh release create v1.0.0 --repo iamnajib71/windows-ad-lab --target main --title 'Windows AD Lab v1.0.0' --notes-file docs/release-notes-v1.0.0.md
 ```
 
-Do not execute that release command until the stated completion gates are satisfied. No Co-Authored-By or attribution trailers are added. `.env.example` contains paths only; actual `.env`, AGENTS.md and CLAUDE.md remain ignored.
+Do not execute that release command until the stated completion gates are satisfied. No Co-Authored-By or attribution trailers are added. `.env.example` contains paths only; actual `.env` and local tool configuration files remain ignored.

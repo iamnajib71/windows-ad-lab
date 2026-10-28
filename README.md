@@ -15,7 +15,6 @@ I built a Windows office lab where staff accounts, shared drives and desktop pol
 | **Results** | [27 offline tests with zero analysis findings](evidence/local-validation.json), [10 live server checks](evidence/server/server-with-client-acceptance.json) and [6 standard-user checks](evidence/client/client-staff-acceptance.json) passed. [Five deliberately reproduced faults were repaired](docs/current-state.md). |
 | **Skills shown** | Active Directory, Windows Server, Group Policy, PowerShell, DNS, DHCP, NTFS permissions, RSAT, backup and troubleshooting. |
 | **Relevant roles** | Service Desk Analyst, Desktop Support, Junior Systems Administrator. |
-| **How it was built** | Designed, specified and reviewed by me; built with Codex as my coding agent (vibe coding). Verification and its limits are linked below. |
 | **Try it / evidence** | [Demo and provenance](evidence/client/README.md#demo) · [Build guide](docs/build-guide.md) · [Learning walkthrough](docs/learning-walkthrough.md) · [Evidence register](evidence/README.md) |
 
 ## What I did, step by step
